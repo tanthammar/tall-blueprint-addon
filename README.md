@@ -1,23 +1,24 @@
-# Blueprint Nova Addon
+# WIP - DON'T INSTALL, yet!
 
-![Build Status](https://travis-ci.org/Naoray/blueprint-nova-addon.svg?branch=master)
-[![Total Downloads](https://img.shields.io/packagist/dt/naoray/blueprint-nova-addon.svg?style=flat)](https://packagist.org/packages/naoray/blueprint-nova-addon)
+# TALL-forms Blueprint Addon
+#### This package is based on [Blueprint Nova Addon](https://github.com/Naoray/blueprint-nova-addon) by [Krishan König](https://github.com/naoray).
 
-:mega: Shoutout to [Jason McCreary](https://github.com/jasonmccreary) whose [Blueprint](https://github.com/laravel-shift/blueprint) package lays the groundwork for this small addon. Thank you Jason :raised_hands:
-
-Installing this addon will allow you to generate your Nova resources with the `php artisan blueprint:build` command.
+Installing this addon will allow you to generate Tall-forms for all models with the `php artisan blueprint:build` command.
 
 ## Installation
-You can install this package and **Blueprint** via composer:
+* Install Laravel, Livewire and TALL-forms
+* Then install this package and **Blueprint** via composer:
 
 ```bash
-composer require --dev naoray/blueprint-nova-addon
+composer require --dev tanthammar/tall-blueprint-addon
 ```
 
-> :warning: You need to have [laravel nova](https://nova.laravel.com/) installed in order for the resource generation to take place!
+> :warning: You need to have [tall-forms](https://github.com/tanthammar/tall-forms/) installed!
 
 ## Usage
-Refer to [Blueprint's Basic Usage](https://github.com/laravel-shift/blueprint#basic-usage) to get started. Afterwards you can run the `blueprint:build` command to generate Nova resources automatically. To get an idea of how easy it is you can use the example `draft.yaml` file below.
+Refer to [Blueprint's Basic Usage](https://github.com/laravel-shift/blueprint#basic-usage) 
+to get started. Afterwards you can run the `blueprint:build` command to 
+generate Tall-forms automatically. Try this example `draft.yaml` file.
 
 ```yaml
 # draft.yaml
@@ -36,83 +37,20 @@ models:
     published_at: nullable timestamp
 ```
 
-From these 13 lines of YAML, this addon will generate 2 Nova resources which are pre-filled with 14 fields.
-
-```php
-// App/Nova/Comment.php
-public function fields(Request $request)
-{
-    return [
-        ID::make()->sortable(),
-
-        Textarea::make('Content')
-            ->rules('required', 'string'),
-
-        DateTime::make('Published at'),
-
-        BelongsTo::make('Post'),
-
-        DateTime::make('Created at'),
-        DateTime::make('Updated at'),
-    ];
-}
-
-// App/Nova/Post.php
-public function fields(Request $request)
-{
-    return [
-        ID::make()->sortable(),
-
-        Text::make('Title')
-            ->rules('required', 'string', 'max:400'),
-
-        Textarea::make('Content')
-            ->rules('required', 'string'),
-
-        DateTime::make('Published at'),
-
-        BelongsTo::make('Author', 'author', User::class),
-
-        HasMany::make('Comments'),
-
-        DateTime::make('Created at'),
-        DateTime::make('Updated at'),
-    ];
-}
-```
-
 ## Configuration
 You may publish the configuration with the following command:
 
 ```bash
-php artisan vendor:publish --tag=blueprint-nova-config
+php artisan vendor:publish --tag=tall-blueprint-config
 ```
 
 ### Timestamp fields
 To disable the generation of `timestamp` fields for all Nova resources set this option to `false`.
 
-## Testing
-
-``` bash
-composer test
-```
-
-## Changelog
-
-Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
-
-## Contributing
-
-Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
-
-## Security
-
-If you discover any security related issues, please email krishan.koenig@gmail.com instead of using the issue tracker.
-
 ## Credits
 
-- [Krishan König](https://github.com/naoray)
-- [All Contributors](../../contributors)
+- [Krishan König](https://github.com/naoray) for [Blueprint Nova Addon](https://github.com/Naoray/blueprint-nova-addon)
+- [Jason McCreary](https://github.com/jasonmccreary) for [Blueprint](https://github.com/laravel-shift/blueprint)
 
 ## License
 
