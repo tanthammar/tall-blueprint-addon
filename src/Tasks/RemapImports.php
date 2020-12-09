@@ -1,9 +1,9 @@
 <?php
 
-namespace Naoray\BlueprintNovaAddon\Tasks;
+namespace Tanthammar\TallBlueprintAddon\Tasks;
 
 use Closure;
-use Naoray\BlueprintNovaAddon\Contracts\Task;
+use Tanthammar\TallBlueprintAddon\Contracts\Task;
 
 class RemapImports implements Task
 {

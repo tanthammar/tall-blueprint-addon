@@ -1,12 +1,12 @@
 <?php
 
-namespace Naoray\BlueprintNovaAddon\Tasks;
+namespace Tanthammar\TallBlueprintAddon\Tasks;
 
 use Blueprint\Models\Column;
 use Closure;
 use Illuminate\Support\Collection;
-use Naoray\BlueprintNovaAddon\Contracts\Task;
-use Naoray\BlueprintNovaAddon\Translators\Rules;
+use Tanthammar\TallBlueprintAddon\Contracts\Task;
+use Tanthammar\TallBlueprintAddon\Translators\Rules;
 
 class AddRegularFields implements Task
 {

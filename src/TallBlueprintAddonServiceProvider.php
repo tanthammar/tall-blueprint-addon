@@ -1,16 +1,16 @@
 <?php
 
-namespace Naoray\BlueprintNovaAddon;
+namespace Tanthammar\TallBlueprintAddon;
 
 use Blueprint\Blueprint;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
-use Naoray\BlueprintNovaAddon\Tasks\AddIdentifierField;
-use Naoray\BlueprintNovaAddon\Tasks\AddRegularFields;
-use Naoray\BlueprintNovaAddon\Tasks\AddRelationshipFields;
-use Naoray\BlueprintNovaAddon\Tasks\AddTimestampFields;
+use Tanthammar\TallBlueprintAddon\Tasks\AddIdentifierField;
+use Tanthammar\TallBlueprintAddon\Tasks\AddRegularFields;
+use Tanthammar\TallBlueprintAddon\Tasks\AddRelationshipFields;
+use Tanthammar\TallBlueprintAddon\Tasks\AddTimestampFields;
 
-class BlueprintNovaAddonServiceProvider extends ServiceProvider implements DeferrableProvider
+class TallBlueprintAddonServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
      * Bootstrap the application services.
@@ -34,8 +34,8 @@ class BlueprintNovaAddonServiceProvider extends ServiceProvider implements Defer
             'blueprint-nova-config'
         );
 
-        $this->app->singleton(NovaGenerator::class, function ($app) {
-            $generator = new NovaGenerator($app['files']);
+        $this->app->singleton(TallBlueprintGenerator::class, function ($app) {
+            $generator = new TallBlueprintGenerator($app['files']);
 
             $generator->registerTask(new AddIdentifierField());
             $generator->registerTask(new AddRegularFields());
@@ -46,7 +46,7 @@ class BlueprintNovaAddonServiceProvider extends ServiceProvider implements Defer
         });
 
         $this->app->extend(Blueprint::class, function ($blueprint, $app) {
-            $blueprint->registerGenerator($app[NovaGenerator::class]);
+            $blueprint->registerGenerator($app[TallBlueprintGenerator::class]);
 
             return $blueprint;
         });
@@ -61,7 +61,7 @@ class BlueprintNovaAddonServiceProvider extends ServiceProvider implements Defer
     {
         return [
             'command.blueprint.build',
-            NovaGenerator::class,
+            TallBlueprintGenerator::class,
             Blueprint::class,
         ];
     }

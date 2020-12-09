@@ -1,12 +1,12 @@
 <?php
 
-namespace Naoray\BlueprintNovaAddon\Tasks;
+namespace Tanthammar\TallBlueprintAddon\Tasks;
 
 use Blueprint\Models\Model;
 use Closure;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Naoray\BlueprintNovaAddon\Contracts\Task;
+use Tanthammar\TallBlueprintAddon\Contracts\Task;
 
 class AddRelationshipFields implements Task
 {

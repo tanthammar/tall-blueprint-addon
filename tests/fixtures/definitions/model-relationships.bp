@@ -1,9 +1,0 @@
-models:
-  Subscription:
-    user_id: id
-    relationships:
-      belongsToMany: Team
-      hasMany: Order
-      hasOne: Duration, Transaction
-      MorphTo: Comment
-      morphMany: Payment

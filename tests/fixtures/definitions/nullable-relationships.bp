@@ -1,4 +1,0 @@
-models:
-  Subscription:
-    user_id: id nullable
-    item_id: id:product

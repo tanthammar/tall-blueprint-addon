@@ -1,6 +1,6 @@
 <?php
 
-namespace Naoray\BlueprintNovaAddon;
+namespace Tanthammar\TallBlueprintAddon;
 
 trait HasStubPath
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Naoray\BlueprintNovaAddon;
+namespace Tanthammar\TallBlueprintAddon;
 
 use Blueprint\Blueprint;
 use Blueprint\Contracts\Generator;
@@ -8,11 +8,11 @@ use Blueprint\Models\Model;
 use Blueprint\Tree;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Str;
-use Naoray\BlueprintNovaAddon\Contracts\Task;
-use Naoray\BlueprintNovaAddon\Tasks\AddTimestampFields;
-use Naoray\BlueprintNovaAddon\Tasks\RemapImports;
+use Tanthammar\TallBlueprintAddon\Contracts\Task;
+use Tanthammar\TallBlueprintAddon\Tasks\AddTimestampFields;
+use Tanthammar\TallBlueprintAddon\Tasks\RemapImports;
 
-class NovaGenerator implements Generator
+class TallBlueprintGenerator implements Generator
 {
     use HasStubPath;
 

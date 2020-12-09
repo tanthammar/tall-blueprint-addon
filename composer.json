@@ -31,12 +31,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Naoray\\BlueprintNovaAddon\\": "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Naoray\\BlueprintNovaAddon\\Tests\\": "tests"
+            "Tanthammar\\TallBlueprintAddon\\": "src"
         }
     },
     "scripts": {
@@ -48,7 +43,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Naoray\\BlueprintNovaAddon\\BlueprintNovaAddonServiceProvider"
+                "Tanthammar\\TallBlueprintAddon\\TallBlueprintAddonServiceProvider"
             ]
         }
     }

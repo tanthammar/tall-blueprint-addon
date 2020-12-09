@@ -1,6 +1,6 @@
 <?php
 
-namespace Naoray\BlueprintNovaAddon\Contracts;
+namespace Tanthammar\TallBlueprintAddon\Contracts;
 
 use Closure;
 
