@@ -1,24 +1,28 @@
 {
-    "name": "naoray/blueprint-nova-addon",
+    "name": "tanthammar/tall-blueprint-addon",
     "description": "",
     "keywords": [
-        "naoray",
-        "blueprint-nova-addon"
+        "laravel",
+        "livewire",
+        "tall-stack",
+        "tall-forms",
+        "tall-data-tables",
+        "tall-blueprint-addon"
     ],
-    "homepage": "https://github.com/naoray/blueprint-nova-addon",
+    "homepage": "https://github.com/tanthammar/tall-blueprint-addon",
     "license": "MIT",
     "type": "library",
     "authors": [
         {
-            "name": "Krishan König",
-            "email": "krishan.koenig@gmail.com",
+            "name": "Tina Hammar",
+            "email": "post@tinahammar.se",
             "role": "Developer"
         }
     ],
     "require": {
         "illuminate/pipeline": "^6.0 || ^7.0 || ^8.0",
         "illuminate/support": "^6.0 || ^7.0 || ^8.0",
-        "laravel-shift/blueprint": "^1.18"
+        "laravel-shift/blueprint": "^1.20"
     },
     "require-dev": {
         "orchestra/testbench": "^4.0 || ^5.0 || ^6.0",
