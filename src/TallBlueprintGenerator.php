@@ -39,7 +39,7 @@ class TallBlueprintGenerator implements Generator
         /** @var \Blueprint\Models\Model $model */
         foreach ($tree->models() as $model) {
 
-            $path = "app".config('tall_forms_blueprint.forms-output-path');
+            $path = "app".$this->getFormNamespace();
 
             if (! $this->files->exists(dirname($path))) {
                 $this->files->makeDirectory(dirname($path), 0755, true);
@@ -65,25 +65,20 @@ class TallBlueprintGenerator implements Generator
             ->through($this->filteredTasks())
             ->thenReturn();
 
-        $stub = str_replace('DummyNamespace', "App".config('tall_forms_blueprint.forms-output-path'), $stub);
-        $stub = str_replace('DummyClass', $model->name(), $stub);
+
+        $stub = str_replace('DummyNamespace', "App".$this->getFormNamespace(), $stub);
+        $stub = str_replace('ModelsPath', $model->fullyQualifiedClassName(), $stub);
         $stub = str_replace('DummyModel', $model->name(), $stub);
+        $stub = str_replace('dummymodel', Str::snake($model->name()), $stub);
         $stub = str_replace('// fields...', $data['fields'], $stub);
         $stub = str_replace('use Tanthammar\TallForms\TallFormComponent;', implode(PHP_EOL, $data['imports']), $stub);
 
         return $stub;
     }
 
-    protected function getFormNamespace(Model $model): string
+    protected function getFormNamespace(): string
     {
-        $namespace = Str::after($model->fullyQualifiedNamespace(), config('blueprint.namespace'));
-        $namespace = config('blueprint.namespace').config('tall_forms_blueprint.forms-output-path').$namespace;
-
-        if (config('blueprint.models_namespace')) {
-            $namespace = str_replace('\\'.config('blueprint.models_namespace'), '', $namespace);
-        }
-
-        return $namespace;
+        return config('tall-forms-blueprint.forms-output-path');
     }
 
     public function registerTask(Task $task): void
@@ -105,7 +100,7 @@ class TallBlueprintGenerator implements Generator
     {
         $tasks = $this->tasks;
 
-        if (! config('tall_forms_blueprint.timestamps')) {
+        if (! config('tall-forms-blueprint.timestamps')) {
             $tasks = array_filter($tasks, function ($key) {
                 return $key !== AddTimestampFields::class;
             }, ARRAY_FILTER_USE_KEY);

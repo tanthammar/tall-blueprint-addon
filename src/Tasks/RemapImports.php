@@ -12,7 +12,11 @@ class RemapImports implements Task
         $data['imports'] = collect($data['imports'])
             ->unique()
             ->map(function ($type) {
-                return 'use Tanthammar\TallForms\\'.$type.';';
+                if(in_array($type, $this->sponsorTypes())) {
+                    return 'use Tanthammar\TallFormsSponsors\\'.$type.';';
+                } else {
+                    return 'use Tanthammar\TallForms\\'.$type.';';
+                }
             })
             ->prepend('use Tanthammar\TallForms\TallFormComponent;')
             ->sort(function ($a, $b) {
@@ -22,5 +26,14 @@ class RemapImports implements Task
             ->all();
 
         return $next($data);
+    }
+
+    public function sponsorTypes()
+    {
+        return [
+            'Trix',
+            'DatePicker',
+            'Number'
+        ];
     }
 }

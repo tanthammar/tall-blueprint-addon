@@ -20,5 +20,5 @@ return [
     'forms-output-path' => '\Http\Livewire\Forms',
 
     //where applicable, add ->includeExternalScripts()
-    'include-external-scripts' => true,
+    'include-external-scripts' => false,
 ];

@@ -2,7 +2,7 @@
 
 namespace DummyNamespace;
 
-use ModelsPathDummyModel;
+use ModelsPath;
 use Tanthammar\TallForms\TallFormComponent;
 
 class DummyModelForm extends TallFormComponent

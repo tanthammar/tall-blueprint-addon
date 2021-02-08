@@ -15,7 +15,7 @@ class AddTimestampFields implements Task
         $fields = $data['fields'];
         $imports = $data['imports'];
 
-        $external = config('tall_forms_blueprint.include-external-scripts') ? '->includeExternalScripts()' : null;
+        $external = config('tall-forms-blueprint.include-external-scripts') ? '->includeExternalScripts()' : null;
 
         if($model->usesTimestamps() || $model->usesSoftDeletes()) {
             $imports[] = 'DatePicker';

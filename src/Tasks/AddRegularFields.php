@@ -18,7 +18,7 @@ class AddRegularFields implements Task
         $model = $data['model'];
         $fields = $data['fields'];
         $imports = $data['imports'];
-        $external = config('tall_forms_blueprint.include-external-scripts') ? '->includeExternalScripts()' : null;
+        $external = config('tall-forms-blueprint.include-external-scripts') ? '->includeExternalScripts()' : null;
 
         $columns = $this->regularColumns($model->columns());
         foreach ($columns as $column) {

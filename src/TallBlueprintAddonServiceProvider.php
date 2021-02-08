@@ -31,7 +31,7 @@ class TallBlueprintAddonServiceProvider extends ServiceProvider implements Defer
     {
         $this->mergeConfigFrom(
             dirname(__DIR__) . '/config/tall_forms_blueprint.php',
-            'tall-forms-blueprint-config'
+            'tall-forms-blueprint'
         );
 
         $this->app->singleton(TallBlueprintGenerator::class, function ($app) {
