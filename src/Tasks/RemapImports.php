@@ -12,9 +12,9 @@ class RemapImports implements Task
         $data['imports'] = collect($data['imports'])
             ->unique()
             ->map(function ($type) {
-                return 'use Laravel\Nova\Fields\\'.$type.';';
+                return 'use Tanthammar\TallForms\\'.$type.';';
             })
-            ->prepend('use Illuminate\Http\Request;')
+            ->prepend('use Tanthammar\TallForms\TallFormComponent;')
             ->sort(function ($a, $b) {
                 return  strlen($a) - strlen($b) ?: strcmp($a, $b);
             })

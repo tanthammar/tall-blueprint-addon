@@ -19,8 +19,8 @@ class TallBlueprintAddonServiceProvider extends ServiceProvider implements Defer
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                dirname(__DIR__).'/config/nova_blueprint.php' => config_path('nova_blueprint.php'),
-            ], 'nova_blueprint');
+                dirname(__DIR__) . '/config/tall_forms_blueprint.php' => config_path('tall_forms_blueprint.php'),
+            ], 'tall_forms_blueprint');
         }
     }
 
@@ -30,8 +30,8 @@ class TallBlueprintAddonServiceProvider extends ServiceProvider implements Defer
     public function register()
     {
         $this->mergeConfigFrom(
-            dirname(__DIR__).'/config/nova_blueprint.php',
-            'blueprint-nova-config'
+            dirname(__DIR__) . '/config/tall_forms_blueprint.php',
+            'tall-forms-blueprint-config'
         );
 
         $this->app->singleton(TallBlueprintGenerator::class, function ($app) {

@@ -57,6 +57,8 @@ class AddRelationshipFields implements Task
                     $fields .= '->nullable()';
                 }
 
+                $fields .= '->relation()';
+
                 $fields .= ','.PHP_EOL;
             }
 

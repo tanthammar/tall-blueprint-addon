@@ -15,15 +15,20 @@ class AddTimestampFields implements Task
         $fields = $data['fields'];
         $imports = $data['imports'];
 
-        if ($model->usesTimestamps()) {
-            $imports[] = 'DateTime';
+        $external = config('tall_forms_blueprint.include-external-scripts') ? '->includeExternalScripts()' : null;
 
-            $fields .= self::INDENT."DateTime::make('Created at'),".PHP_EOL.self::INDENT."DateTime::make('Updated at'),";
+        if($model->usesTimestamps() || $model->usesSoftDeletes()) {
+            $imports[] = 'DatePicker';
+        }
+
+        if ($model->usesTimestamps()) {
+            $fields .= self::INDENT . "DatePicker::make('Created at', 'created_at'){$external},";
+            $fields .= PHP_EOL;
+            $fields .= self::INDENT . "DatePicker::make('Updated at', 'updated_at'){$external},";
         }
 
         if ($model->usesSoftDeletes()) {
-            $imports[] = 'DateTime';
-            $fields .= PHP_EOL.self::INDENT."DateTime::make('Deleted at'),";
+            $fields .= PHP_EOL . self::INDENT . "DatePicker::make('Deleted at', 'deleted_at'){$external},";
         }
 
         $data['fields'] = $fields;

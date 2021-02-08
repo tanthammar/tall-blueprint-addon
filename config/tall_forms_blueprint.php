@@ -15,4 +15,10 @@ return [
     */
 
     'timestamps' => true,
+
+    //no trailing back-slash
+    'forms-output-path' => '\Http\Livewire\Forms',
+
+    //where applicable, add ->includeExternalScripts()
+    'include-external-scripts' => true,
 ];

@@ -34,10 +34,12 @@ class TallBlueprintGenerator implements Generator
     {
         $output = [];
 
-        $stub = $this->files->get($this->stubPath().DIRECTORY_SEPARATOR.'class.stub');
+        $stub = $this->files->get($this->stubPath().DIRECTORY_SEPARATOR.'class.stub.php');
 
         /** @var \Blueprint\Models\Model $model */
         foreach ($tree->models() as $model) {
+
+            //Todo ta bort nova path
             $path = $this->getPath($model);
 
             if (! $this->files->exists(dirname($path))) {
@@ -52,9 +54,17 @@ class TallBlueprintGenerator implements Generator
         return $output;
     }
 
+    protected function getModelsPath(): string
+    {
+        return config('blueprint.models_namespace')
+            ? config('blueprint.namespace').'\\'.config('blueprint.models_namespace')
+            : config('blueprint.namespace');
+    }
+
+    //Todo ta bort nova output
     protected function getPath(Model $model): string
     {
-        $path = str_replace('\\', '/', Blueprint::relativeNamespace($this->getNovaNamespace($model).'/'.$model->name()));
+        $path = str_replace('\\', '/', Blueprint::relativeNamespace($this->getFormNamespace($model).'/'.$model->name()));
 
         return config('blueprint.app_path').'/'.$path.'.php';
     }
@@ -70,19 +80,19 @@ class TallBlueprintGenerator implements Generator
             ->through($this->filteredTasks())
             ->thenReturn();
 
-        $stub = str_replace('DummyNamespace', $this->getNovaNamespace($model), $stub);
+        $stub = str_replace('DummyNamespace', $this->getFormNamespace($model), $stub);
         $stub = str_replace('DummyClass', $model->name(), $stub);
         $stub = str_replace('DummyModel', '\\'.$model->fullyQualifiedClassName(), $stub);
         $stub = str_replace('// fields...', $data['fields'], $stub);
-        $stub = str_replace('use Illuminate\Http\Request;', implode(PHP_EOL, $data['imports']), $stub);
+        $stub = str_replace('use Tanthammar\TallForms\TallFormComponent;', implode(PHP_EOL, $data['imports']), $stub);
 
         return $stub;
     }
 
-    protected function getNovaNamespace(Model $model): string
+    protected function getFormNamespace(Model $model): string
     {
         $namespace = Str::after($model->fullyQualifiedNamespace(), config('blueprint.namespace'));
-        $namespace = config('blueprint.namespace').'\Nova'.$namespace;
+        $namespace = config('blueprint.namespace').config('tall_forms_blueprint.forms-output-path').$namespace;
 
         if (config('blueprint.models_namespace')) {
             $namespace = str_replace('\\'.config('blueprint.models_namespace'), '', $namespace);
@@ -110,7 +120,7 @@ class TallBlueprintGenerator implements Generator
     {
         $tasks = $this->tasks;
 
-        if (! config('nova_blueprint.timestamps')) {
+        if (! config('tall_forms_blueprint.timestamps')) {
             $tasks = array_filter($tasks, function ($key) {
                 return $key !== AddTimestampFields::class;
             }, ARRAY_FILTER_USE_KEY);
@@ -121,6 +131,6 @@ class TallBlueprintGenerator implements Generator
 
     public function types(): array
     {
-        return ['nova'];
+        return ['tall-forms'];
     }
 }
