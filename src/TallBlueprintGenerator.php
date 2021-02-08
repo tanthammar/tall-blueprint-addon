@@ -39,7 +39,7 @@ class TallBlueprintGenerator implements Generator
         /** @var \Blueprint\Models\Model $model */
         foreach ($tree->models() as $model) {
 
-            $path = "app".$this->getFormNamespace();
+            $path = "app".str_replace('\\', '/',$this->getFormNamespace()).'/'.$model->name().'Form.php';
 
             if (! $this->files->exists(dirname($path))) {
                 $this->files->makeDirectory(dirname($path), 0755, true);
