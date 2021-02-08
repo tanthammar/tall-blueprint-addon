@@ -39,7 +39,7 @@ class TallBlueprintGenerator implements Generator
         /** @var \Blueprint\Models\Model $model */
         foreach ($tree->models() as $model) {
 
-            $path = $this->getPath($model);
+            $path = "app".config('tall_forms_blueprint.forms-output-path');
 
             if (! $this->files->exists(dirname($path))) {
                 $this->files->makeDirectory(dirname($path), 0755, true);
@@ -53,19 +53,6 @@ class TallBlueprintGenerator implements Generator
         return $output;
     }
 
-    protected function getModelsPath(): string
-    {
-        return config('blueprint.models_namespace')
-            ? config('blueprint.namespace').'\\'.config('blueprint.models_namespace')
-            : config('blueprint.namespace');
-    }
-
-    protected function getPath(Model $model): string
-    {
-        $path = str_replace('\\', '/', Blueprint::relativeNamespace($this->getFormNamespace($model).'/'.$model->name()));
-
-        return config('blueprint.app_path').'/'.$path.'.php';
-    }
 
     protected function populateStub(string $stub, Model $model): string
     {
@@ -78,9 +65,9 @@ class TallBlueprintGenerator implements Generator
             ->through($this->filteredTasks())
             ->thenReturn();
 
-        $stub = str_replace('DummyNamespace', $this->getFormNamespace($model), $stub);
+        $stub = str_replace('DummyNamespace', "App".config('tall_forms_blueprint.forms-output-path'), $stub);
         $stub = str_replace('DummyClass', $model->name(), $stub);
-        $stub = str_replace('DummyModel', '\\'.$model->fullyQualifiedClassName(), $stub);
+        $stub = str_replace('DummyModel', $model->name(), $stub);
         $stub = str_replace('// fields...', $data['fields'], $stub);
         $stub = str_replace('use Tanthammar\TallForms\TallFormComponent;', implode(PHP_EOL, $data['imports']), $stub);
 
