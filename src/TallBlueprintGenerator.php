@@ -39,7 +39,6 @@ class TallBlueprintGenerator implements Generator
         /** @var \Blueprint\Models\Model $model */
         foreach ($tree->models() as $model) {
 
-            //Todo ta bort nova path
             $path = $this->getPath($model);
 
             if (! $this->files->exists(dirname($path))) {
@@ -61,7 +60,6 @@ class TallBlueprintGenerator implements Generator
             : config('blueprint.namespace');
     }
 
-    //Todo ta bort nova output
     protected function getPath(Model $model): string
     {
         $path = str_replace('\\', '/', Blueprint::relativeNamespace($this->getFormNamespace($model).'/'.$model->name()));

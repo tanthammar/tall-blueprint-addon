@@ -45,7 +45,7 @@ php artisan vendor:publish --tag=tall-blueprint-config
 ```
 
 ### Timestamp fields
-To disable the generation of `timestamp` fields for all Nova resources set this option to `false`.
+To disable the generation of `timestamp` fields for all forms set this option to `false`.
 
 ## Credits
 
