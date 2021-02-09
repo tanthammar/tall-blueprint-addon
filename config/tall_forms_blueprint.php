@@ -22,4 +22,10 @@ return [
     //where applicable, add ->includeExternalScripts()
     'include-external-scripts' => false,
 
+    //set to true if you want redirects on CREATE and UPDATE form methods.
+    //only applicable if you use the blueprint controllers RESOURCE SHORTHAND
+    //tall-forms has a save-and-stay, and a save-and-go-back button, setting this option to true REPLACES that behaviour
+    'resource-redirect' => true,
+    //if don't have any redirects on create and update, perhaps it makes no sense to flash to session either?
+    'resource-session' => true,
 ];

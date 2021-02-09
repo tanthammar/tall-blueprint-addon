@@ -11,6 +11,11 @@ trait HasStubPath
      */
     protected function stubPath(): string
     {
-        return dirname(__DIR__).'/stubs';
+        return dirname(__DIR__) . '/stubs';
+    }
+
+    protected function getStub(): string
+    {
+       return $this->files->get($this->stubPath() . DIRECTORY_SEPARATOR . 'class.stub.php');
     }
 }

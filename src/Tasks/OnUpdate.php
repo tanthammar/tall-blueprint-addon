@@ -4,16 +4,28 @@
 namespace Tanthammar\TallBlueprintAddon\Tasks;
 
 
-use Closure;
-use Tanthammar\TallBlueprintAddon\Contracts\Task;
-
-class OnUpdate implements Task
+class OnUpdate
 {
-    const INDENT = '            ';
+    use MethodsTrait;
 
-    public function handle(array $data, Closure $next): array
-    {
-        // TODO: Implement handle() method.
-        return $next($data);
+    const INDENT = '        ';
+
+
+    protected $session = null;
+    protected $redirect = null; //tall-forms has a save and go back button or save and stay.
+
+    protected function crudAction() {
+        data_set($this->data, 'update', $this->buildMethods($this->statements));
     }
+
+    protected function redirect($string): void
+    {
+        if(config('tall-forms-blueprint.resource-redirect')) $this->redirect = $string;
+    }
+
+    protected function session($string): void
+    {
+        if(config('tall-forms-blueprint.resource-session')) $this->session = $string;
+    }
+
 }

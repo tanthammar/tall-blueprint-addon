@@ -45,15 +45,13 @@ class TallBlueprintAddonServiceProvider extends ServiceProvider implements Defer
             $generator->registerTask(new AddRegularFields());
             $generator->registerTask(new AddRelationshipFields());
             $generator->registerTask(new AddTimestampFields());
-            $generator->registerControllerTask(new OnCreate());
-            $generator->registerControllerTask(new OnUpdate());
-            $generator->registerControllerTask(new OnDelete());
 
             return $generator;
         });
 
         $this->app->extend(Blueprint::class, function ($blueprint, $app) {
             $blueprint->registerGenerator($app[TallBlueprintGenerator::class]);
+            $blueprint->registerGenerator(new TallMethodsBlueprintGenerator($app['files']));
 
             $blueprint->swapGenerator(
                 \Blueprint\Generators\Statements\ViewGenerator::class,

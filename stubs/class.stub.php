@@ -28,7 +28,7 @@ class DummyModelForm extends TallFormComponent
         // Set the $model property in order to conditionally display fields when the model instance exists
         $this->model = DummyModel::create($validated_data);
 
-        //remove if you do not want to show the delete button.
+        //remove if you do not want to show the delete button or if you are redirecting.
         $this->showDelete = true;
 
         // create...
@@ -40,16 +40,10 @@ class DummyModelForm extends TallFormComponent
         // update...
     }
 
-    public function delete()
+    public function onDeleteModel()
     {
-        if (optional($this->model)->exists) {
-            $this->model->delete();
-            session()->flash('success', 'The object was deleted');
-            return redirect(urldecode($this->previous));
-
-            // delete...
-        }
-        return null;
+        $this->model->delete();
+        // delete...
     }
 
 

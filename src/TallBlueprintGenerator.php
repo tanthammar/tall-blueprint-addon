@@ -2,7 +2,6 @@
 
 namespace Tanthammar\TallBlueprintAddon;
 
-use Blueprint\Blueprint;
 use Blueprint\Contracts\Generator;
 use Blueprint\Models\Model;
 use Blueprint\Tree;
@@ -10,23 +9,21 @@ use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Str;
 use Tanthammar\TallBlueprintAddon\Contracts\Task;
 use Tanthammar\TallBlueprintAddon\Tasks\AddTimestampFields;
+use Tanthammar\TallBlueprintAddon\Tasks\HasSharedGeneratorFunctions;
 use Tanthammar\TallBlueprintAddon\Tasks\RemapImports;
 
 class TallBlueprintGenerator implements Generator
 {
-    use HasStubPath;
+    use HasStubPath, HasSharedGeneratorFunctions;
 
     /** @var \Illuminate\Contracts\Filesystem\Filesystem */
-    private $files;
+    protected $files;
 
     /** @var array */
     private $imports = [];
 
     /** @var array */
     private $tasks = [];
-
-    /** @var array */
-    private $controllerTasks = [];
 
     public function __construct($files)
     {
@@ -37,23 +34,15 @@ class TallBlueprintGenerator implements Generator
     {
         $output = [];
 
-        $stub = $this->files->get($this->stubPath() . DIRECTORY_SEPARATOR . 'class.stub.php');
+        $stub = $this->getStub();
 
         /** @var \Blueprint\Models\Model $model */
         foreach ($tree->models() as $model) {
 
             $path = $this->outputPath($model->name());
-
             $this->files->put($path, $this->populateStub($stub, $model));
 
             $output['created'][] = $path;
-        }
-
-        /** @var \Blueprint\Models\Controller $controller */
-        foreach ($tree->controllers() as $controller) {
-            $path = $this->outputPath($controller->name());
-            $stub = $this->files->exists(dirname($path)) ? $this->files->get($path) : $stub;
-            $this->files->put($path, $this->populateControllerStub($stub, $controller));
         }
 
         return $output;
@@ -84,60 +73,16 @@ class TallBlueprintGenerator implements Generator
 
         $stub = $this->sharedStrReplace($stub, $model->name(), $model->fullyQualifiedClassName());
         $stub = str_replace('// fields...', $data['fields'], $stub);
+        $this->imports = array_unique(array_merge($this->imports, $data['imports']));
         $stub = str_replace('use Tanthammar\TallForms\TallFormComponent;', implode(PHP_EOL, $data['imports']), $stub);
 
         return $stub;
     }
 
-    protected function populateControllerStub(string $stub, \Blueprint\Models\Controller $controller)
-    {
-        $data = resolve(Pipeline::class)
-            ->send([
-                'create' => '',
-                'update' => '',
-                'delete' => '',
-                'imports' => [],
-                'controller' => $controller,
-            ])
-            ->through($this->controllerTasks)
-            ->thenReturn();
-
-        $stub = $this->sharedStrReplace($stub, $controller->name(), $controller->fullyQualifiedClassName());
-        $stub = str_replace('// create...', $data['create'], $stub);
-        $stub = str_replace('// update...', $data['update'], $stub);
-        $stub = str_replace('// delete...', $data['delete'], $stub);
-        $stub = str_replace('use Controllers;', implode(PHP_EOL, $data['imports']), $stub);
-
-        return $stub;
-    }
-
-    protected function sharedStrReplace(string $stub, $name, $className)
-    {
-        $stub = str_replace('DummyNamespace', "App" . $this->getFormNamespace(), $stub);
-        $stub = str_replace('ModelsPath', $className, $stub);
-        $stub = str_replace('DummyModel', $name, $stub);
-        $stub = str_replace('dummymodel', Str::snake($name), $stub);
-        return $stub;
-    }
-
-
-
-    protected function getFormNamespace(): string
-    {
-        return
-            str_replace('App\\', '\\', config('livewire.class_namespace'))
-            . '\\' .
-            config('tall-forms-blueprint.forms-output-path', 'Forms');
-    }
 
     public function registerTask(Task $task): void
     {
         $this->tasks[get_class($task)] = $task;
-    }
-
-    public function registerControllerTask(Task $task): void
-    {
-        $this->controllerTasks[get_class($task)] = $task;
     }
 
 
