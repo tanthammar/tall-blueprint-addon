@@ -52,9 +52,8 @@ class TallBlueprintGenerator implements Generator
         /** @var \Blueprint\Models\Controller $controller */
         foreach ($tree->controllers() as $controller) {
             $path = $this->outputPath($controller->name());
+            $stub = $this->files->exists(dirname($path)) ? $this->files->get($path) : $stub;
             $this->files->put($path, $this->populateControllerStub($stub, $controller));
-
-            $output['created'][] = $path;
         }
 
         return $output;

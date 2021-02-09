@@ -31,13 +31,13 @@ class DummyModelForm extends TallFormComponent
         //remove if you do not want to show the delete button.
         $this->showDelete = true;
 
-        // create ...
+        // create...
     }
 
     public function onUpdateModel($validated_data)
     {
         $this->model->update($validated_data);
-        // update ...
+        // update...
     }
 
     public function delete()
@@ -47,7 +47,7 @@ class DummyModelForm extends TallFormComponent
             session()->flash('success', 'The object was deleted');
             return redirect(urldecode($this->previous));
 
-            // update ...
+            // delete...
         }
         return null;
     }
