@@ -34,14 +34,14 @@ class TallBlueprintGenerator implements Generator
     {
         $output = [];
 
-        $stub = $this->files->get($this->stubPath().DIRECTORY_SEPARATOR.'class.stub.php');
+        $stub = $this->files->get($this->stubPath() . DIRECTORY_SEPARATOR . 'class.stub.php');
 
         /** @var \Blueprint\Models\Model $model */
         foreach ($tree->models() as $model) {
 
-            $path = "app".str_replace('\\', '/',$this->getFormNamespace()).'/'.$model->name().'Form.php';
+            $path = "app" . str_replace('\\', '/', $this->getFormNamespace()) . '/' . $model->name() . 'Form.php';
 
-            if (! $this->files->exists(dirname($path))) {
+            if (!$this->files->exists(dirname($path))) {
                 $this->files->makeDirectory(dirname($path), 0755, true);
             }
 
@@ -66,7 +66,7 @@ class TallBlueprintGenerator implements Generator
             ->thenReturn();
 
 
-        $stub = str_replace('DummyNamespace', "App".$this->getFormNamespace(), $stub);
+        $stub = str_replace('DummyNamespace', "App" . $this->getFormNamespace(), $stub);
         $stub = str_replace('ModelsPath', $model->fullyQualifiedClassName(), $stub);
         $stub = str_replace('DummyModel', $model->name(), $stub);
         $stub = str_replace('dummymodel', Str::snake($model->name()), $stub);
@@ -78,7 +78,10 @@ class TallBlueprintGenerator implements Generator
 
     protected function getFormNamespace(): string
     {
-        return config('tall-forms-blueprint.forms-output-path');
+        return
+            str_replace('App\\', '\\', config('livewire.class_namespace'))
+            . '\\' .
+            config('tall-forms-blueprint.forms-output-path', 'Forms');
     }
 
     public function registerTask(Task $task): void
@@ -100,7 +103,7 @@ class TallBlueprintGenerator implements Generator
     {
         $tasks = $this->tasks;
 
-        if (! config('tall-forms-blueprint.timestamps')) {
+        if (!config('tall-forms-blueprint.timestamps')) {
             $tasks = array_filter($tasks, function ($key) {
                 return $key !== AddTimestampFields::class;
             }, ARRAY_FILTER_USE_KEY);

@@ -22,7 +22,6 @@ class DummyModelForm extends TallFormComponent
     }
 
 
-    // Mandatory method, if model does not exist
     public function onCreateModel($validated_data)
     {
         // Set the $model property in order to conditionally display fields when the model instance exists
@@ -30,13 +29,25 @@ class DummyModelForm extends TallFormComponent
 
         //remove if you do not want to show the delete button.
         $this->showDelete = true;
+
     }
 
-    // OPTIONAL method, already exists in the TallForm trait
     public function onUpdateModel($validated_data)
     {
         $this->model->update($validated_data);
+        // update ...
     }
+
+    public function delete()
+    {
+        if (optional($this->model)->exists) {
+            $this->model->delete();
+            session()->flash('success', 'The object was deleted');
+            return redirect(urldecode($this->previous));
+        }
+        return null;
+    }
+
 
     public function fields()
     {

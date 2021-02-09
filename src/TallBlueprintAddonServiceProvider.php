@@ -5,6 +5,8 @@ namespace Tanthammar\TallBlueprintAddon;
 use Blueprint\Blueprint;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
+use Tanthammar\TallBlueprintAddon\Generators\ControllerGenerator;
+use Tanthammar\TallBlueprintAddon\Generators\ViewGenerator;
 use Tanthammar\TallBlueprintAddon\Tasks\AddIdentifierField;
 use Tanthammar\TallBlueprintAddon\Tasks\AddRegularFields;
 use Tanthammar\TallBlueprintAddon\Tasks\AddRelationshipFields;
@@ -48,8 +50,14 @@ class TallBlueprintAddonServiceProvider extends ServiceProvider implements Defer
         $this->app->extend(Blueprint::class, function ($blueprint, $app) {
             $blueprint->registerGenerator($app[TallBlueprintGenerator::class]);
 
+            $blueprint->swapGenerator(
+                \Blueprint\Generators\Statements\ViewGenerator::class,
+                new ViewGenerator($app['files'])
+            );
+
             return $blueprint;
         });
+
     }
 
     /**

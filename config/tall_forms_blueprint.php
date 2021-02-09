@@ -16,14 +16,10 @@ return [
 
     'timestamps' => true,
 
-    //no trailing back-slash, in relation to the "app" directory
-    'forms-output-path' => '\\Http\\Livewire\\Forms',
+    //no trailing back-slash, in relation to config('livewire.class_namespace') directory
+    'forms-output-path' => 'Forms',
 
     //where applicable, add ->includeExternalScripts()
     'include-external-scripts' => false,
 
-    'generators' => [
-        'controller' => \Blueprint\Generators\ControllerGenerator::class,
-        'view' => \Blueprint\Generators\Statements\ViewGenerator::class,
-    ],
 ];
