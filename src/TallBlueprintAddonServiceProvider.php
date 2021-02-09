@@ -5,12 +5,14 @@ namespace Tanthammar\TallBlueprintAddon;
 use Blueprint\Blueprint;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
-use Tanthammar\TallBlueprintAddon\Generators\ControllerGenerator;
 use Tanthammar\TallBlueprintAddon\Generators\ViewGenerator;
 use Tanthammar\TallBlueprintAddon\Tasks\AddIdentifierField;
 use Tanthammar\TallBlueprintAddon\Tasks\AddRegularFields;
 use Tanthammar\TallBlueprintAddon\Tasks\AddRelationshipFields;
 use Tanthammar\TallBlueprintAddon\Tasks\AddTimestampFields;
+use Tanthammar\TallBlueprintAddon\Tasks\OnCreate;
+use Tanthammar\TallBlueprintAddon\Tasks\OnDelete;
+use Tanthammar\TallBlueprintAddon\Tasks\OnUpdate;
 
 class TallBlueprintAddonServiceProvider extends ServiceProvider implements DeferrableProvider
 {
@@ -43,6 +45,9 @@ class TallBlueprintAddonServiceProvider extends ServiceProvider implements Defer
             $generator->registerTask(new AddRegularFields());
             $generator->registerTask(new AddRelationshipFields());
             $generator->registerTask(new AddTimestampFields());
+            $generator->registerControllerTask(new OnCreate());
+            $generator->registerControllerTask(new OnUpdate());
+            $generator->registerControllerTask(new OnDelete());
 
             return $generator;
         });

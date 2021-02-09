@@ -25,6 +25,9 @@ class TallBlueprintGenerator implements Generator
     /** @var array */
     private $tasks = [];
 
+    /** @var array */
+    private $controllerTasks = [];
+
     public function __construct($files)
     {
         $this->files = $files;
@@ -39,18 +42,32 @@ class TallBlueprintGenerator implements Generator
         /** @var \Blueprint\Models\Model $model */
         foreach ($tree->models() as $model) {
 
-            $path = "app" . str_replace('\\', '/', $this->getFormNamespace()) . '/' . $model->name() . 'Form.php';
-
-            if (!$this->files->exists(dirname($path))) {
-                $this->files->makeDirectory(dirname($path), 0755, true);
-            }
+            $path = $this->outputPath($model->name());
 
             $this->files->put($path, $this->populateStub($stub, $model));
 
             $output['created'][] = $path;
         }
 
+        /** @var \Blueprint\Models\Controller $controller */
+        foreach ($tree->controllers() as $controller) {
+            $path = $this->outputPath($controller->name());
+            $this->files->put($path, $this->populateControllerStub($stub, $controller));
+
+            $output['created'][] = $path;
+        }
+
         return $output;
+    }
+
+    protected function outputPath($name): string
+    {
+        $path = "app" . str_replace('\\', '/', $this->getFormNamespace()) . '/' . $name . 'Form.php';
+
+        if (!$this->files->exists(dirname($path))) {
+            $this->files->makeDirectory(dirname($path), 0755, true);
+        }
+        return $path;
     }
 
 
@@ -66,15 +83,45 @@ class TallBlueprintGenerator implements Generator
             ->thenReturn();
 
 
-        $stub = str_replace('DummyNamespace', "App" . $this->getFormNamespace(), $stub);
-        $stub = str_replace('ModelsPath', $model->fullyQualifiedClassName(), $stub);
-        $stub = str_replace('DummyModel', $model->name(), $stub);
-        $stub = str_replace('dummymodel', Str::snake($model->name()), $stub);
+        $stub = $this->sharedStrReplace($stub, $model->name(), $model->fullyQualifiedClassName());
         $stub = str_replace('// fields...', $data['fields'], $stub);
         $stub = str_replace('use Tanthammar\TallForms\TallFormComponent;', implode(PHP_EOL, $data['imports']), $stub);
 
         return $stub;
     }
+
+    protected function populateControllerStub(string $stub, \Blueprint\Models\Controller $controller)
+    {
+        $data = resolve(Pipeline::class)
+            ->send([
+                'create' => '',
+                'update' => '',
+                'delete' => '',
+                'imports' => [],
+                'controller' => $controller,
+            ])
+            ->through($this->controllerTasks)
+            ->thenReturn();
+
+        $stub = $this->sharedStrReplace($stub, $controller->name(), $controller->fullyQualifiedClassName());
+        $stub = str_replace('// create...', $data['create'], $stub);
+        $stub = str_replace('// update...', $data['update'], $stub);
+        $stub = str_replace('// delete...', $data['delete'], $stub);
+        $stub = str_replace('use Controllers;', implode(PHP_EOL, $data['imports']), $stub);
+
+        return $stub;
+    }
+
+    protected function sharedStrReplace(string $stub, $name, $className)
+    {
+        $stub = str_replace('DummyNamespace', "App" . $this->getFormNamespace(), $stub);
+        $stub = str_replace('ModelsPath', $className, $stub);
+        $stub = str_replace('DummyModel', $name, $stub);
+        $stub = str_replace('dummymodel', Str::snake($name), $stub);
+        return $stub;
+    }
+
+
 
     protected function getFormNamespace(): string
     {
@@ -89,15 +136,11 @@ class TallBlueprintGenerator implements Generator
         $this->tasks[get_class($task)] = $task;
     }
 
-    public function removeTask(string $taskName)
+    public function registerControllerTask(Task $task): void
     {
-        $taskClassNames = array_map(function ($taskObj) {
-            return get_class($taskObj);
-        }, $this->tasks);
-
-        $targetIndex = array_search($taskName, $taskClassNames);
-        array_splice($this->tasks, $targetIndex, 1);
+        $this->controllerTasks[get_class($task)] = $task;
     }
+
 
     protected function filteredTasks(): array
     {

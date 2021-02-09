@@ -4,6 +4,7 @@ namespace DummyNamespace;
 
 use ModelsPath;
 use Tanthammar\TallForms\TallFormComponent;
+use Controllers;
 
 class DummyModelForm extends TallFormComponent
 {
@@ -30,6 +31,7 @@ class DummyModelForm extends TallFormComponent
         //remove if you do not want to show the delete button.
         $this->showDelete = true;
 
+        // create ...
     }
 
     public function onUpdateModel($validated_data)
@@ -44,6 +46,8 @@ class DummyModelForm extends TallFormComponent
             $this->model->delete();
             session()->flash('success', 'The object was deleted');
             return redirect(urldecode($this->previous));
+
+            // update ...
         }
         return null;
     }
