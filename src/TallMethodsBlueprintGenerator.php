@@ -30,9 +30,11 @@ class TallMethodsBlueprintGenerator implements Generator
 
         /** @var \Blueprint\Models\Controller $controller */
         foreach ($tree->controllers() as $controller) {
-            $path = $this->outputPath($controller->name());
-            $stub = $this->files->exists(dirname($path)) ? $this->files->get($path) : $stub;
-            $this->files->put($path, $this->populateStub($stub, $controller));
+            if(!$controller->isApiResource()) {
+                $path = $this->outputPath($controller->name());
+                $stub = $this->files->exists($path) ? $this->files->get($path) : $stub;
+                $this->files->put($path, $this->populateStub($stub, $controller));
+            }
         }
 
         return $output;
@@ -55,10 +57,18 @@ class TallMethodsBlueprintGenerator implements Generator
 
         foreach ($controller->methods() as $name => $statements) {
             data_set($data, 'name', $controller->name());
-            echo $name . PHP_EOL;
-            if($name == 'store') $data = (new onCreate($statements, $data))->handle();
-            if($name == 'update') $data = (new onUpdate($statements, $data))->handle();
-            if($name == 'destroy') $data = (new onDelete($statements, $data))->handle();
+            if($name == 'store') {
+                data_set($data, 'action', 'store');
+                $data = (new onCreate($statements, $data))->handle();
+            }
+            if($name == 'update') {
+                data_set($data, 'action', 'update');
+                $data = (new onUpdate($statements, $data))->handle();
+            }
+            if($name == 'destroy') {
+                data_set($data, 'action', 'destroy');
+                $data = (new onDelete($statements, $data))->handle();
+            }
         }
 
         $stub = $this->sharedStrReplace($stub, $controller->name(), $controller->fullyQualifiedClassName());
