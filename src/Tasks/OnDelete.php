@@ -10,12 +10,8 @@ class OnDelete
 
     const INDENT = '        ';
 
-    protected $session = self::INDENT."session()->flash('success', __('The object was deleted'));". PHP_EOL;
+    protected $session = self::INDENT.'session()->flash("success", "The {$className} was deleted");'. PHP_EOL;
     protected $redirect = self::INDENT.'return redirect(urldecode($this->previous));'. PHP_EOL;
-
-    protected function crudAction() {
-        data_set($this->data, 'delete', $this->buildMethods($this->statements));
-    }
 
     protected function redirect($string): void
     {

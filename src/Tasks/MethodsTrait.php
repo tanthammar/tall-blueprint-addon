@@ -31,7 +31,6 @@ trait MethodsTrait
     {
 
         $this->imports[$this->name] = data_get($this->data, 'imports', []);
-        $this->crudAction();
         data_set($this->data, 'imports', $this->buildImports());
         return $this->data;
     }
@@ -70,16 +69,15 @@ trait MethodsTrait
                     $this->addImport(config('blueprint.namespace') . '\\Events\\' . $statement->event());
                 }
             } elseif ($statement instanceof RedirectStatement) {
-                $this->redirect(self::INDENT.$statement->output().PHP_EOL);
+                $this->redirect(self::INDENT . $statement->output() . PHP_EOL);
             } elseif ($statement instanceof SessionStatement) {
-                $this->session(self::INDENT.str_replace('$request->', null, $statement->output()).PHP_EOL);
-            }
-            elseif ($statement instanceof EloquentStatement) {
-                $body .='//Otiose EloquentStatement from Blueprint'.PHP_EOL;
-                $body .= self::INDENT.'//'.$statement->output($this->name, $this->action, false).PHP_EOL;
+                $this->session(self::INDENT . str_replace('$request->', null, $statement->output()) . PHP_EOL);
+            } elseif ($statement instanceof EloquentStatement) {
+                $body .= '//Otiose EloquentStatement from Blueprint' . PHP_EOL;
+                $body .= self::INDENT . '//' . $statement->output($this->name, $this->action, false) . PHP_EOL;
             } elseif ($statement instanceof QueryStatement) {
-                $body .='//Otiose QueryStatement from Blueprint'.PHP_EOL;
-                $body .= self::INDENT.'//'.$statement->output($this->name).PHP_EOL;
+                $body .= '//Otiose QueryStatement from Blueprint' . PHP_EOL;
+                $body .= self::INDENT . '//' . $statement->output($this->name) . PHP_EOL;
             }
         }
 

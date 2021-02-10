@@ -10,11 +10,7 @@ class OnCreate
     const INDENT = '        ';
 
     protected $session = null;
-    protected $redirect = null; //tall-forms has a save and go back button or save and stay.
-
-    protected function crudAction() {
-        data_set($this->data, 'create', $this->buildMethods($this->statements));
-    }
+    protected $redirect = null; //tall-forms has a save and go back button and save and stay.
 
     protected function redirect($string): void
     {

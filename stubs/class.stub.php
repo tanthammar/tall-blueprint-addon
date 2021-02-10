@@ -49,7 +49,6 @@ class DummyModelForm extends TallFormComponent
         //if you want to pass the model data somewhere with the data after model is deleted
         $modelArray = $this->model->toArray();
         $this->model->delete();
-        session()->flash('success', "The {$className} was deleted");
         // delete...
     }
 

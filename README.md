@@ -5,6 +5,11 @@
 
 Installing this addon will allow you to generate Tall-forms for all models with the `php artisan blueprint:build` command.
 
+## Requirements
+* tall-forms >= v7.8.4
+* blueprint >= 1.20
+
+
 ## Installation
 * Install Laravel, Livewire and TALL-forms
 * Then install this package and **Blueprint** via composer:
@@ -12,8 +17,6 @@ Installing this addon will allow you to generate Tall-forms for all models with 
 ```bash
 composer require --dev tanthammar/tall-blueprint-addon
 ```
-
-> :warning: You need to have [tall-forms](https://github.com/tanthammar/tall-forms/) installed!
 
 ## Usage
 Refer to [Blueprint's Basic Usage](https://github.com/laravel-shift/blueprint#basic-usage) 
@@ -23,18 +26,42 @@ generate Tall-forms automatically. Try this example `draft.yaml` file.
 ```yaml
 # draft.yaml
 models:
-  Post:
-    author_id: id foreign:users
-    title: string:400
-    content: longtext
-    published_at: nullable timestamp
-    relationships:
-      HasMany: Comment
+    Post:
+        author_id: id foreign:users
+        title: string:400
+        content: longtext
+        published_at: nullable timestamp
+        relationships:
+            HasMany: Comment
 
-  Comment:
-    post_id: id foreign
-    content: longtext
-    published_at: nullable timestamp
+    Comment:
+        post_id: id foreign
+        content: longtext
+        published_at: nullable timestamp
+
+controllers:
+    Post:
+        index:
+            query: all
+            render: post.index with:posts
+        create:
+            render: post.create
+        store:
+            notify: post.author ReviewPost with:post
+            send: ReviewPost to:post.author with:post
+            validate: title, content
+            save: post
+            redirect: post.index
+            fire: NewPost with:post
+        update:
+            dispatch: SyncMedia with:post
+
+        destroy:
+            flash: post.title
+            send: PostDeleted to:post.author with:post
+
+    Comment:
+        resource
 ```
 
 ## Configuration
@@ -46,6 +73,9 @@ php artisan vendor:publish --tag=tall-blueprint-config
 
 ### Timestamp fields
 To disable the generation of `timestamp` fields for all forms set this option to `false`.
+
+## Contribution
+This is open source, I'll gladly accept every effort to contribute.
 
 ## Credits
 

@@ -30,7 +30,7 @@ class TallMethodsBlueprintGenerator implements Generator
 
         /** @var \Blueprint\Models\Controller $controller */
         foreach ($tree->controllers() as $controller) {
-            if(!$controller->isApiResource()) {
+            if (!$controller->isApiResource()) {
                 $path = $this->outputPath($controller->name());
                 $stub = $this->files->exists($path) ? $this->files->get($path) : $stub;
                 $this->files->put($path, $this->populateStub($stub, $controller));
@@ -57,15 +57,15 @@ class TallMethodsBlueprintGenerator implements Generator
 
         foreach ($controller->methods() as $name => $statements) {
             data_set($data, 'name', $controller->name());
-            if($name == 'store') {
+            if ($name == 'store') {
                 data_set($data, 'action', 'store');
                 $data = (new onCreate($statements, $data))->handle();
             }
-            if($name == 'update') {
+            if ($name == 'update') {
                 data_set($data, 'action', 'update');
                 $data = (new onUpdate($statements, $data))->handle();
             }
-            if($name == 'destroy') {
+            if ($name == 'destroy') {
                 data_set($data, 'action', 'destroy');
                 $data = (new onDelete($statements, $data))->handle();
             }
