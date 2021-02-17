@@ -10,9 +10,9 @@ class OnUpdate
 
     const INDENT = '        ';
 
-
-    protected $session = null;
-    protected $redirect = null; //tall-forms has a save and go back button and save and stay.
+    //defaults
+    protected $session = null; //tall-forms has a notify() method that displays a success message on create/update
+    protected $redirect = null; //tall-forms has a save and go back button or save and stay.
 
     protected function redirect($string): void
     {

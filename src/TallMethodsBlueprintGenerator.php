@@ -57,8 +57,9 @@ class TallMethodsBlueprintGenerator implements Generator
 
         foreach ($controller->methods() as $name => $statements) {
             data_set($data, 'name', $controller->name());
+            //switch action name
             if ($name == 'store') {
-                data_set($data, 'action', 'store');
+                data_set($data, 'action', 'create');
                 $data = (new onCreate($statements, $data))->handle();
             }
             if ($name == 'update') {
@@ -66,7 +67,7 @@ class TallMethodsBlueprintGenerator implements Generator
                 $data = (new onUpdate($statements, $data))->handle();
             }
             if ($name == 'destroy') {
-                data_set($data, 'action', 'destroy');
+                data_set($data, 'action', 'delete');
                 $data = (new onDelete($statements, $data))->handle();
             }
         }

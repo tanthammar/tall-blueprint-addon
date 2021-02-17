@@ -23,7 +23,7 @@ trait MethodsTrait
     {
         $this->statements = $statements;
         $this->name = data_get($data, 'name', ''); //$controller->name()
-        $this->action = data_get($data, 'action', '');//create, update, destroy
+        $this->action = data_get($data, 'action', '');//create, update, delete
         $this->data = $data;
     }
 
@@ -31,6 +31,7 @@ trait MethodsTrait
     {
 
         $this->imports[$this->name] = data_get($this->data, 'imports', []);
+        data_set($this->data, $this->action, $this->buildMethods($this->statements));
         data_set($this->data, 'imports', $this->buildImports());
         return $this->data;
     }
@@ -73,10 +74,10 @@ trait MethodsTrait
             } elseif ($statement instanceof SessionStatement) {
                 $this->session(self::INDENT . str_replace('$request->', null, $statement->output()) . PHP_EOL);
             } elseif ($statement instanceof EloquentStatement) {
-                $body .= '//Otiose EloquentStatement from Blueprint' . PHP_EOL;
+                $body .= self::INDENT . '//Otiose EloquentStatement from Blueprint' . PHP_EOL;
                 $body .= self::INDENT . '//' . $statement->output($this->name, $this->action, false) . PHP_EOL;
             } elseif ($statement instanceof QueryStatement) {
-                $body .= '//Otiose QueryStatement from Blueprint' . PHP_EOL;
+                $body .= self::INDENT . '//Otiose QueryStatement from Blueprint' . PHP_EOL;
                 $body .= self::INDENT . '//' . $statement->output($this->name) . PHP_EOL;
             }
         }
