@@ -9,9 +9,21 @@ Auto generate [TALL-forms](https://github.com/tanthammar/tall-forms/wiki) for al
 [![Latest Unstable Version](https://poser.pugx.org/tanthammar/tall-blueprint-addon/v/unstable)](//packagist.org/packages/tanthammar/tall-blueprint-addon)
 
 # What you get
-* Consider the code you get as a mockup/draft. **It won't work as is**. You'll have to review and finalize the field declarations.
-* You will get a single form component for each model. 
+* **Code**: Consider the code you get as a mockup/draft. **It won't work as is**. You'll have to review and finalize the field declarations.
+  <br><br>
+* **Usability**: You will get a single form component for each model. 
   It's up to you to split it in two components if you need separate forms for create/update forms.
+  <br><br>
+* **Tests**: The Blueprint generated tests matches the controllers, not tall-forms. You will have to update them to Livewire syntax.
+  <br><br>
+* **Duplicated code:** <br>Any Controller statements in your `draft.yaml` related to `store`, `update` and `destroy`, will be written to both Controllers and the Livewire form components.
+  To avoid code duplication you can manually remove the code in Controllers after the build command. Another suggestion is to refactor into `Actions` that you can use in both Controllers, and the Livewire form components.
+  <br><br>
+  Controller => TallForm, duplicated code position:
+  <br>
+  * Controller->store() => TallForm->onCreateModel()
+  * Controller->update() => TallForm->onUpdateModel()
+  * Controller->destroy() => TallForm->onDeleteModel()
 
 # Early version!
 * Relationship fields are outputted as `Repeaters`, `Selects` or `MultiSelect`. This will change when I create required fields in TALL-forms
