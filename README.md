@@ -4,6 +4,10 @@ Auto generate [TALL-forms](https://github.com/tanthammar/tall-forms/wiki) for al
 #### This plugin is based on [Blueprint Nova Addon](https://github.com/Naoray/blueprint-nova-addon) by [Krishan König](https://github.com/naoray).
 
 
+[![Latest Stable Version](https://poser.pugx.org/tanthammar/tall-blueprint-addon/v)](//packagist.org/packages/tanthammar/tall-blueprint-addon)
+[![Total Downloads](https://poser.pugx.org/tanthammar/tall-blueprint-addon/downloads)](//packagist.org/packages/tanthammar/tall-blueprint-addon)
+[![Latest Unstable Version](https://poser.pugx.org/tanthammar/tall-blueprint-addon/v/unstable)](//packagist.org/packages/tanthammar/tall-blueprint-addon)
+
 # What you get
 * Consider the code you get as a mockup/draft. **It won't work as is**. You'll have to review and finalize the field declarations.
 * You will get a single form component for each model. 
