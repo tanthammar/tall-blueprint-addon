@@ -18,7 +18,7 @@ class AddIdentifierField implements Task
     {
         $column = $this->identifierColumn($data['model']);
 
-        $identifierName = $column->name() === 'id' ? 'ID, id' : "'".$column->name()."'";
+        $identifierName = $column->name() === 'id' ? '"ID", "id"' : "'".$column->name()."'";
         $data['fields'] .= 'Number::make('.$identifierName.'),'.PHP_EOL.PHP_EOL;
         $data['imports'][] = 'Number';
 

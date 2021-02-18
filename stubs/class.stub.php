@@ -23,32 +23,22 @@ class DummyModelForm extends TallFormComponent
     }
 
 
+    // REQUIRED, if you are creating a model with this form
     public function onCreateModel($validated_data)
     {
-        // Set the $model property in order to conditionally display fields if the model exists
-        $this->model = DummyModel::create($validated_data);
-        //remove if you do not want to show the delete button or if you are redirecting.
-        $this->showDelete = true;
-        //because Blueprint auto-generates $modelName
-        $dummymodel = $this->model;
         // create...
     }
 
+    // OPTIONAL, method exists in tall-form component
     public function onUpdateModel($validated_data)
     {
-        $this->model->update($validated_data);
-        //because Blueprint auto-generates $modelName
-        $dummymodel = $this->model;
         // update...
     }
 
+    // OPTIONAL, method exists in tall-form component
     public function onDeleteModel()
     {
-        //for session flash message
-        $className = class_basename($this->model);
-        //if you want to pass the model data somewhere with the data after model is deleted
-        $modelArray = $this->model->toArray();
-        $this->model->delete();
+        $dummymodel = $this->model;
         // delete...
     }
 

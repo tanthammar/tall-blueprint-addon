@@ -41,23 +41,37 @@ class AddRelationshipFields implements Task
                 $fieldType = $this->fieldType($type);
                 $imports[] = $fieldType;
 
-                if ($fieldType === 'MorphTo') {
+                if ($type === 'morphto') {
                     $label .= 'able';
                 }
 
                 $fields .= self::INDENT.$fieldType."::make('".$label."'";
 
-                if ($fieldType !== 'MorphTo' && $this->classNameNotGuessable($label, $class)) {
-                    $fields .= ", '".$methodName."', ".$class.'::class';
+
+                if ($type !== 'morphto' && $this->classNameNotGuessable($label, $class)) {
+//                    $fields .= ", '".$methodName."', ".$class.'::class'; //sets third option in make() command. Example make('Author', 'user_id', User::class)
+                    $fields .= ", '".$methodName."'";
                 }
 
                 $fields .= ')';
 
-                if ($this->isNullable($reference, $model)) {
-                    $fields .= '->nullable()';
-                }
 
-                //$fields .= '->relation()';
+
+                switch ($fieldType) {
+                    case 'Select':
+                    case 'MultiSelect':
+                    $fields .= $this->classNameNotGuessable($label, $class) ? "->options(".$class."::take(10)->pluck('id', 'name'))" : "->options()";
+                    break;
+                    case 'KeyVal':
+                    case 'Repeater':
+                    $fields .= '->fields([])';
+                    break;
+                }
+                $fields .= '->relation()';
+
+                if ($this->isNullable($reference, $model)) {
+                    $fields .= "->rules('nullable')";
+                }
 
                 $fields .= ','.PHP_EOL;
             }
@@ -106,13 +120,13 @@ class AddRelationshipFields implements Task
     private function fieldType(string $dataType): string
     {
         static $fieldTypes = [
-            'belongsto' => 'BelongsTo',
-            'belongstomany' => 'BelongsToMany',
-            'hasone' => 'HasOne',
-            'hasmany' => 'HasMany',
-            'morphto' => 'MorphTo',
-            'morphone' => 'MorphOne',
-            'morphmany' => 'MorphMany',
+            'belongsto' => 'Select', //BelongsTo
+            'belongstomany' => 'MultiSelect', //BelongsToMany type multiple
+            'hasone' => 'KeyVal', //HasOne
+            'hasmany' => 'Repeater', //HasMany
+            'morphto' => 'Select', //MorphTo, get the Parent morpheable model
+            'morphone' => 'KeyVal', //MorphOne, example has one image()
+            'morphmany' => 'Repeater', //MorphMany
         ];
 
         return $fieldTypes[strtolower($dataType)];

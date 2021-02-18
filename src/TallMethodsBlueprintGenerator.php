@@ -72,10 +72,10 @@ class TallMethodsBlueprintGenerator implements Generator
             }
         }
 
-        $stub = $this->sharedStrReplace($stub, $controller->name(), $controller->fullyQualifiedClassName());
         $stub = str_replace('// create...', data_get($data, 'create'), $stub);
         $stub = str_replace('// update...', data_get($data, 'update'), $stub);
         $stub = str_replace('// delete...', data_get($data, 'delete'), $stub);
+        $stub = $this->sharedStrReplace($stub, $controller->name(), $controller->fullyQualifiedClassName());
         $imports = array_unique(data_get($data, 'imports', []));
         $stub = str_replace('use Controllers;', implode(PHP_EOL, $imports), $stub);
 

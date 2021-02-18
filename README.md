@@ -1,9 +1,17 @@
-# WIP - DON'T INSTALL, yet!
-
 # TALL-forms Blueprint Addon
-#### This package is based on [Blueprint Nova Addon](https://github.com/Naoray/blueprint-nova-addon) by [Krishan König](https://github.com/naoray).
+Auto generate [TALL-forms](https://github.com/tanthammar/tall-forms/wiki) for all models with the `php artisan blueprint:build` command.
 
-Installing this addon will allow you to generate Tall-forms for all models with the `php artisan blueprint:build` command.
+#### This plugin is based on [Blueprint Nova Addon](https://github.com/Naoray/blueprint-nova-addon) by [Krishan König](https://github.com/naoray).
+
+
+# What you get
+* Consider the code you get as a mockup/draft. **It won't work as is**. You'll have to review and finalize the field declarations.
+* You will get a single form component for each model. 
+  It's up to you to split it in two components if you need separate forms for create/update forms.
+
+# Early version!
+* Relationship fields are outputted as `Repeaters`, `Selects` or `MultiSelect`. This will change when I create required fields in TALL-forms
+* Review generated code, it's not perfect :)
 
 ## Requirements
 * tall-forms >= v7.8.4
@@ -47,21 +55,27 @@ controllers:
         create:
             render: post.create
         store:
+            validate: title, content, author_id
+            save: post
+            dispatch: SyncMedia with:post
             notify: post.author ReviewPost with:post
             send: ReviewPost to:post.author with:post
-            validate: title, content
-            save: post
-            redirect: post.index
+            flash: post.title
             fire: NewPost with:post
+            redirect: post.index
         update:
+            update: post
             dispatch: SyncMedia with:post
 
         destroy:
             flash: post.title
-            send: PostDeleted to:post.author with:post
+            send: SupportPostDeleted to:support with:post
+            delete: post
+            redirect: post.index
 
     Comment:
         resource
+
 ```
 
 ## Configuration

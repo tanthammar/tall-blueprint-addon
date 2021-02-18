@@ -25,7 +25,9 @@ return [
     //set to true if you want redirects on CREATE and UPDATE form methods.
     //only applicable if you use the blueprint controllers RESOURCE SHORTHAND
     //tall-forms has a save-and-stay, and a save-and-go-back button, setting this option to true REPLACES that behaviour
-    'resource-redirect' => true,
-    //if don't have any redirects on create and update, perhaps it makes no sense to flash to session either?
-    'resource-session' => true,
+    'resource-redirect' => false,
+
+    //tall-forms has a notify() method that displays a success message on create/update, maybe you don't need to flash to session?
+    //only applicable if you use the blueprint controllers RESOURCE SHORTHAND
+    'resource-session' => false,
 ];

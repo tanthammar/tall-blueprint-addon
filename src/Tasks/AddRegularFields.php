@@ -98,7 +98,7 @@ class AddRegularFields implements Task
             return '';
         }
 
-        return PHP_EOL . self::INDENT_PLUS . '->rules(' . trim(implode(',', $rules)) . ')';
+        return PHP_EOL . self::INDENT_PLUS . '->rules([' . trim(implode(',', $rules)) . '])';
     }
 
     private function fieldType(string $dataType)

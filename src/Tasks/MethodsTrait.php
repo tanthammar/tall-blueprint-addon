@@ -16,8 +16,13 @@ trait MethodsTrait
     protected $imports = [];
     protected $data = [];
     protected $statements;
-    public $name = '';
-    public $action = '';
+    protected $name = '';
+    protected $action = '';
+    protected $eloquentActions = [
+        'create' => '$this->model = DummyModel::create($validated_data);' . PHP_EOL . self::INDENT . '$dummymodel = $this->model;' . PHP_EOL . self::INDENT . '$this->showDelete = true;',
+        'update' => '$this->model->update($validated_data);' . PHP_EOL . self::INDENT . '$dummymodel = $this->model;',
+        'delete' => '$this->model->delete();'
+    ];
 
     public function __construct($statements, array $data)
     {
@@ -48,6 +53,13 @@ trait MethodsTrait
         $this->imports[$this->name][] = 'use ' . $class . ';';
     }
 
+    protected function makeEloquentStatement(string $statement): string
+    {
+        $string = \Str::contains($statement, $this->action . '(') ? $this->eloquentActions[$this->action] : $statement;
+        if (\Str::contains($string, '->save(')) $string = $this->eloquentActions['create'];
+        return $string;
+    }
+
     private function buildMethods($statements): string
     {
         $body = '';
@@ -71,19 +83,20 @@ trait MethodsTrait
                 }
             } elseif ($statement instanceof RedirectStatement) {
                 $this->redirect(self::INDENT . $statement->output() . PHP_EOL);
+                $body .= $this->redirect;
             } elseif ($statement instanceof SessionStatement) {
                 $this->session(self::INDENT . str_replace('$request->', null, $statement->output()) . PHP_EOL);
+                $body .= $this->session;
             } elseif ($statement instanceof EloquentStatement) {
-                $body .= self::INDENT . '//Otiose EloquentStatement from Blueprint' . PHP_EOL;
-                $body .= self::INDENT . '//' . $statement->output($this->name, $this->action, false) . PHP_EOL;
+                $body .= self::INDENT . $this->makeEloquentStatement($statement->output($this->name, $this->action, false)) . PHP_EOL;
             } elseif ($statement instanceof QueryStatement) {
                 $body .= self::INDENT . '//Otiose QueryStatement from Blueprint' . PHP_EOL;
                 $body .= self::INDENT . '//' . $statement->output($this->name) . PHP_EOL;
             }
         }
 
-        $body .= $this->session;
-        $body .= $this->redirect;
+//        $body .= $this->session;
+//        $body .= $this->redirect;
 
         return trim($body);
     }

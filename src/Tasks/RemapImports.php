@@ -33,6 +33,10 @@ class RemapImports implements Task
         return [
             'Checkbox',
             'Input',
+            'Trix',
+            'Select',
+            'KeyVal',
+            'Repeater'
         ];
     }
 }
