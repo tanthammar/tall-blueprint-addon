@@ -30,4 +30,9 @@ return [
     //tall-forms has a notify() method that displays a success message on create/update, maybe you don't need to flash to session?
     //only applicable if you use the blueprint controllers RESOURCE SHORTHAND
     'resource-session' => false,
+
+    //Do you have access to the tall-forms-sponsor repository?
+    //If not, please sponsor me: https://github.com/sponsors/tanthammar
+    //Setting this to true, will output sponsor fields instead of open source versions. Like DatePicker instead of Input->type('datetime-local').
+    'sponsor' => false,
 ];

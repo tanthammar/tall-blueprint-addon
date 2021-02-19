@@ -60,14 +60,14 @@ class AddRelationshipFields implements Task
                 switch ($fieldType) {
                     case 'Select':
                     case 'MultiSelect':
-                    $fields .= $this->classNameNotGuessable($label, $class) ? "->options(".$class."::take(10)->pluck('id', 'name'))" : "->options()";
+                    $fields .= '->options(/* TODO pass Array|Collection $'.$label.'Options */)';
                     break;
                     case 'KeyVal':
                     case 'Repeater':
-                    $fields .= '->fields([])';
+                    $fields .= "->fields([/* TODO add {$label} fields */])";
                     break;
                 }
-                $fields .= '->relation()';
+                $fields .= "->relation(/* TODO create a save{$label}() event hook */)";
 
                 if ($this->isNullable($reference, $model)) {
                     $fields .= "->rules('nullable')";

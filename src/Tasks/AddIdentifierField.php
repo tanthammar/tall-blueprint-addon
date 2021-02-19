@@ -19,8 +19,13 @@ class AddIdentifierField implements Task
         $column = $this->identifierColumn($data['model']);
 
         $identifierName = $column->name() === 'id' ? '"ID", "id"' : "'".$column->name()."'";
-        $data['fields'] .= 'Number::make('.$identifierName.'),'.PHP_EOL.PHP_EOL;
-        $data['imports'][] = 'Number';
+        if(config('tall-forms-blueprint.sponsor')) {
+            $data['fields'] .= 'Number::make(' . $identifierName . '),' . PHP_EOL . PHP_EOL;
+            $data['imports'][] = 'Number';
+        } else {
+            $data['fields'] .= "Input::make('{$identifierName}')->type('number')," . PHP_EOL . PHP_EOL;
+            $data['imports'][] = 'Input';
+        }
 
         return $next($data);
     }

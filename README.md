@@ -24,6 +24,8 @@ Auto generate [TALL-forms](https://github.com/tanthammar/tall-forms/wiki) for al
   * Controller->store() => TallForm->onCreateModel()
   * Controller->update() => TallForm->onUpdateModel()
   * Controller->destroy() => TallForm->onDeleteModel()
+    <br><br>
+* S**ponsors**: If you are a sponsor, the build command will generate sponsor fields instead of open source versions. Like `DatePicker` instead of `Input->type('datetime-local')`. See the configuration option below.
 
 # Early version!
 * Relationship fields are outputted as `Repeaters`, `Selects` or `MultiSelect`. This will change when I create required fields in TALL-forms
@@ -42,9 +44,28 @@ Auto generate [TALL-forms](https://github.com/tanthammar/tall-forms/wiki) for al
 composer require --dev tanthammar/tall-blueprint-addon
 ```
 
+## Configuration
+You may publish the configuration with the following command:
+
+```bash
+php artisan vendor:publish --tag=tall-blueprint-config
+```
+
+## Sponsors - update config!
+If you are a sponsor of tall-forms, publish the config file and set `sponsor` to `true`. 
+If not, please sponsor the tall-forms package here: https://github.com/sponsors/tanthammar
+```php
+//Do you have access to the tall-forms-sponsor repository?
+'sponsor' => true,
+```
+
+### Timestamp fields
+To disable the generation of `timestamp` fields for all forms set this option to `false`.
+
+
 ## Usage
-Refer to [Blueprint's Basic Usage](https://github.com/laravel-shift/blueprint#basic-usage) 
-to get started. Afterwards you can run the `blueprint:build` command to 
+Refer to [Blueprint's Basic Usage](https://github.com/laravel-shift/blueprint#basic-usage)
+to get started. Afterwards you can run the `blueprint:build` command to
 generate Tall-forms automatically. Try this example `draft.yaml` file.
 
 ```yaml
@@ -93,16 +114,6 @@ controllers:
         resource
 
 ```
-
-## Configuration
-You may publish the configuration with the following command:
-
-```bash
-php artisan vendor:publish --tag=tall-blueprint-config
-```
-
-### Timestamp fields
-To disable the generation of `timestamp` fields for all forms set this option to `false`.
 
 ## Contribution
 This is open source, I'll gladly accept every effort to contribute.
