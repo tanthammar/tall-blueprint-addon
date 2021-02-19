@@ -25,7 +25,7 @@ Auto generate [TALL-forms](https://github.com/tanthammar/tall-forms/wiki) for al
   * Controller->update() => TallForm->onUpdateModel()
   * Controller->destroy() => TallForm->onDeleteModel()
     <br><br>
-* S**ponsors**: If you are a sponsor, the build command will generate sponsor fields instead of open source versions. Like `DatePicker` instead of `Input->type('datetime-local')`. See the configuration option below.
+* **Sponsors**: If you are a sponsor, the build command will generate sponsor fields instead of open source versions. Like `DatePicker` instead of `Input->type('datetime-local')`. See the configuration option below.
 
 # Early version!
 * Relationship fields are outputted as `Repeaters`, `Selects` or `MultiSelect`. This will change when I create required fields in TALL-forms
@@ -52,8 +52,10 @@ php artisan vendor:publish --tag=tall-blueprint-config
 ```
 
 ## Sponsors - update config!
-If you are a sponsor of tall-forms, publish the config file and set `sponsor` to `true`. 
-If not, please sponsor the tall-forms package here: https://github.com/sponsors/tanthammar
+* If you are a sponsor of tall-forms, publish the config file and set `sponsor` to `true`.
+  <br>The build command will generate sponsor fields instead of open source versions. 
+  <br>Like `DatePicker` instead of `Input->type('datetime-local')`.
+* If not, please sponsor the tall-forms package here: https://github.com/sponsors/tanthammar
 ```php
 //Do you have access to the tall-forms-sponsor repository?
 'sponsor' => true,
