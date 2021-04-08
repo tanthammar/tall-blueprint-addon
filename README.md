@@ -48,7 +48,7 @@ composer require --dev tanthammar/tall-blueprint-addon
 You may publish the configuration with the following command:
 
 ```bash
-php artisan vendor:publish --tag=tall-blueprint-config
+php artisan vendor:publish --tag=tall_forms_blueprint
 ```
 
 ## Sponsors - update config!
