@@ -32,7 +32,7 @@ Auto generate [TALL-forms](https://github.com/tanthammar/tall-forms/wiki) for al
 * Review generated code, it's not perfect :)
 
 ## Requirements
-* tall-forms >= v7.8.4
+* tall-forms >= v7.8.4 || v8
 * blueprint >= 1.20
 
 
