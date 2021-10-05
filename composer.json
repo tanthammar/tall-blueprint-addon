@@ -23,7 +23,7 @@
         "illuminate/pipeline": "^6.0 || ^7.0 || ^8.0",
         "illuminate/support": "^6.0 || ^7.0 || ^8.0",
         "laravel-shift/blueprint": "^1.20",
-        "tanthammar/tall-forms": "^7.9.3 || ^8.0 || dev-master"
+        "tanthammar/tall-forms": "^8.0 || dev-master"
     },
     "require-dev": {
         "orchestra/testbench": "^4.0 || ^5.0 || ^6.0",
