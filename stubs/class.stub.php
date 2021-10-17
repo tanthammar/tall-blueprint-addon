@@ -16,6 +16,8 @@ class DummyModelForm extends TallFormComponent
 
     protected function formAttr(): array
     {
+        $dummymodel = $this->model;
+        
         return [
             'formTitle' => 'Create & Edit DummyModel',
             'wrapWithView' => true, //see https://github.com/tanthammar/tall-forms/wiki/installation/Wrapper-Layout
