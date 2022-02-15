@@ -20,7 +20,7 @@
         }
     ],
     "require": {
-        "laravel/framework": "^8.0",
+        "laravel/framework": "^8.0|^9.0",
         "laravel-shift/blueprint": "^2.0",
         "tanthammar/tall-forms": "^8.0|dev-master|v9.x-dev"
     },
