@@ -17,7 +17,7 @@ class DummyModelForm extends TallFormComponent
     protected function formAttr(): array
     {
         $dummymodel = $this->model;
-        
+
         return [
             'formTitle' => 'Create & Edit DummyModel',
             'wrapWithView' => true, //see https://github.com/tanthammar/tall-forms/wiki/installation/Wrapper-Layout
@@ -30,26 +30,26 @@ class DummyModelForm extends TallFormComponent
 
 
     // REQUIRED, if you are creating a model with this form
-    protected function onCreateModel($validated_data)
+    protected function onCreateModel($validated_data): mixed
     {
         // create...
     }
 
     // OPTIONAL, method exists in tall-form component
-    protected function onUpdateModel($validated_data)
+    protected function onUpdateModel($validated_data): mixed
     {
         // update...
     }
 
     // OPTIONAL, method exists in tall-form component
-    protected function onDeleteModel()
+    protected function onDeleteModel(): mixed
     {
         $dummymodel = $this->model;
         // delete...
     }
 
 
-    protected function fields()
+    protected function fields(): array
     {
         return [
             // fields...

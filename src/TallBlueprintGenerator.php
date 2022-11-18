@@ -16,14 +16,11 @@ class TallBlueprintGenerator implements Generator
 {
     use HasStubPath, HasSharedGeneratorFunctions;
 
-    /** @var \Illuminate\Contracts\Filesystem\Filesystem */
-    protected $files;
+    protected ?\Illuminate\Contracts\Filesystem\Filesystem $files;
 
-    /** @var array */
-    private $imports = [];
+    private array $imports = [];
 
-    /** @var array */
-    private $tasks = [];
+    private array $tasks = [];
 
     public function __construct($files)
     {
@@ -71,12 +68,12 @@ class TallBlueprintGenerator implements Generator
             ->thenReturn();
 
 
-        $stub = $this->sharedStrReplace($stub, $model->name(), $model->fullyQualifiedClassName());
+        $stub = (string)$this->sharedStrReplace($stub, $model->name(), $model->fullyQualifiedClassName());
         $stub = str_replace('// fields...', $data['fields'], $stub);
-        $this->imports = array_unique(array_merge($this->imports, $data['imports']));
-        $stub = str_replace('use Tanthammar\TallForms\TallFormComponent;', implode(PHP_EOL, $data['imports']), $stub);
 
-        return $stub;
+        $this->imports = array_unique(array_merge($this->imports, $data['imports']));
+
+        return str_replace('use Tanthammar\TallForms\TallFormComponent;', implode(PHP_EOL, $data['imports']), $stub);
     }
 
 

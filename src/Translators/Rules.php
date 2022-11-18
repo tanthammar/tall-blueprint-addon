@@ -11,7 +11,7 @@ class Rules
     {
         $rules = BlueprintRules::fromColumn($tableName, $column);
 
-        if (in_array('nullable', $column->modifiers())) {
+        if (in_array('nullable', $column->modifiers(), false)) {
             $rules = array_filter($rules, function ($rule) {
                 return $rule !== 'required';
             });

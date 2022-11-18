@@ -10,21 +10,16 @@ use Blueprint\Tree;
 
 class ViewGenerator implements Generator
 {
-    /**
-     * @var \Illuminate\Contracts\Filesystem\Filesystem
-     */
-    private $files;
 
-    const tall_forms_actions = [
+    private ?\Illuminate\Contracts\Filesystem\Filesystem $files;
+
+    private const tall_forms_actions = [
         'create', 'store', 'edit', 'update', 'destroy'
     ];
 
-    /**
-     * @var bool
-     */
-    private $is_tall_form = false;
+    private bool $is_tall_form = false;
 
-    private $model = '';
+    private ?string $model = '';
 
     public function __construct($files)
     {
@@ -41,7 +36,7 @@ class ViewGenerator implements Generator
         foreach ($tree->controllers() as $controller) {
             foreach ($controller->methods() as $method => $statements) {
                 //start tall-forms
-                if (in_array($method, self::tall_forms_actions)) {
+                if (in_array($method, self::tall_forms_actions, false)) {
                     $this->is_tall_form = true;
                     $this->model = \Str::lower($controller->name());
                 } else {
@@ -80,7 +75,7 @@ class ViewGenerator implements Generator
         return ['controllers', 'views'];
     }
 
-    protected function getPath(string $view)
+    protected function getPath(string $view): string
     {
         return 'resources/views/' . str_replace('.', '/', $view) . '.blade.php';
     }
@@ -88,8 +83,7 @@ class ViewGenerator implements Generator
     protected function populateStub(string $stub, RenderStatement $renderStatement): string
     {
         if ($this->is_tall_form) {
-            $stub = str_replace('{{--', null, $stub);
-            $stub = str_replace('--}}', null, $stub);
+            $stub = str_replace(['{{--', '--}}'], [null, null], $stub);
             $template = '<livewire:forms.' . $this->model . '-form :' . $this->model . '="$' . $this->model . '"/>';
             $stub = str_replace('{{ view }} template', $template, $stub);
         } else {

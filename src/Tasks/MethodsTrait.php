@@ -13,18 +13,18 @@ use Blueprint\Models\Statements\SessionStatement;
 
 trait MethodsTrait
 {
-    protected $imports = [];
-    protected $data = [];
-    protected $statements;
-    protected $name = '';
-    protected $action = '';
-    protected $eloquentActions = [
+    protected array $imports = [];
+    protected array $data = [];
+    protected mixed $statements;
+    protected string $name = '';
+    protected string $action = '';
+    protected array $eloquentActions = [
         'create' => '$this->model = DummyModel::create($validated_data);' . PHP_EOL . self::INDENT . '$dummymodel = $this->model;' . PHP_EOL . self::INDENT . '$this->showDelete = true;',
         'update' => '$this->model->update($validated_data);' . PHP_EOL . self::INDENT . '$dummymodel = $this->model;',
         'delete' => '$this->model->delete();'
     ];
 
-    public function __construct($statements, array $data)
+    public function __construct(mixed $statements, array $data)
     {
         $this->statements = $statements;
         $this->name = data_get($data, 'name', ''); //$controller->name()
@@ -48,7 +48,7 @@ trait MethodsTrait
         return $imports;
     }
 
-    protected function addImport($class)
+    protected function addImport(string $class): void
     {
         $this->imports[$this->name][] = 'use ' . $class . ';';
     }
@@ -60,7 +60,7 @@ trait MethodsTrait
         return $string;
     }
 
-    private function buildMethods($statements): string
+    private function buildMethods(mixed $statements): string
     {
         $body = '';
         foreach ($statements as $statement) {

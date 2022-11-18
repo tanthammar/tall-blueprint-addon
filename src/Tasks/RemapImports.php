@@ -12,11 +12,10 @@ class RemapImports implements Task
         $data['imports'] = collect($data['imports'])
             ->unique()
             ->map(function ($type) {
-                if(in_array($type, $this->freeFields())) {
+                if(in_array($type, $this->freeFields(), false)) {
                     return 'use Tanthammar\TallForms\\'.$type.';';
-                } else {
-                    return 'use Tanthammar\TallFormsSponsors\\'.$type.';';
                 }
+                return 'use Tanthammar\TallFormsSponsors\\'.$type.';';
             })
             ->prepend('use Tanthammar\TallForms\TallFormComponent;')
             ->sort(function ($a, $b) {

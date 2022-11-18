@@ -10,9 +10,9 @@ use Tanthammar\TallBlueprintAddon\Translators\Rules;
 
 class AddRegularFields implements Task
 {
-    const INDENT = '            ';
-    const INDENT_PLUS = '                ';
-    const LICENCE_TYPE_FIELDS = [
+    protected const INDENT = '            ';
+    protected const INDENT_PLUS = '                ';
+    protected const LICENCE_TYPE_FIELDS = [
         'Input' => 'Input',
         'Number' => 'Input',
         'DatePicker' => 'Input',
@@ -74,7 +74,9 @@ class AddRegularFields implements Task
                     'unsignedtinyinteger',
                 ]
             )) {
-                if (!$sponsor) $field .= PHP_EOL . self::INDENT_PLUS . "->type('number')";
+                if (!$sponsor) {
+                    $field .= PHP_EOL . self::INDENT_PLUS . "->type('number')";
+                }
                 $field .= PHP_EOL . self::INDENT_PLUS . '->step(1)->min(1)';
             }
 
@@ -85,7 +87,9 @@ class AddRegularFields implements Task
                     'unsigneddecimal',
                 ]
             )) {
-                if (!$sponsor) $field .= PHP_EOL . self::INDENT_PLUS . "->type('number')";
+                if (!$sponsor) {
+                    $field .= PHP_EOL . self::INDENT_PLUS . "->type('number')";
+                }
                 $field .= PHP_EOL . self::INDENT_PLUS . '->step(0.10)->min(0.10)';
             }
 
@@ -130,7 +134,7 @@ class AddRegularFields implements Task
         return PHP_EOL . self::INDENT_PLUS . '->rules([' . trim(implode(',', $rules)) . '])';
     }
 
-    private function fieldType(string $dataType)
+    private function fieldType(string $dataType): string
     {
         static $fieldTypes = [
             'id' => 'Number',

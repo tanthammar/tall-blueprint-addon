@@ -8,20 +8,24 @@ class OnUpdate
 {
     use MethodsTrait;
 
-    const INDENT = '        ';
+    protected const INDENT = '        ';
 
     //defaults
-    protected $session = null; //tall-forms has a notify() method that displays a success message on create/update
-    protected $redirect = null; //tall-forms has a save and go back button or save and stay.
+    protected ?string $session = null; //tall-forms has a notify() method that displays a success message on create/update
+    protected ?string $redirect = null; //tall-forms has a save and go back button or save and stay.
 
-    protected function redirect($string): void
+    protected function redirect(?string $string): void
     {
-        if(config('tall-forms-blueprint.resource-redirect')) $this->redirect = $string;
+        if(config('tall-forms-blueprint.resource-redirect')) {
+            $this->redirect = $string;
+        }
     }
 
-    protected function session($string): void
+    protected function session(?string $string): void
     {
-        if(config('tall-forms-blueprint.resource-session')) $this->session = $string;
+        if(config('tall-forms-blueprint.resource-session')) {
+            $this->session = $string;
+        }
     }
 
 }

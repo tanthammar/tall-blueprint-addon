@@ -12,7 +12,7 @@ class AddIdentifierField implements Task
 {
     use InteractWithRelationships;
 
-    const INDENT = '            ';
+    protected const INDENT = '            ';
 
     public function handle($data, Closure $next): array
     {

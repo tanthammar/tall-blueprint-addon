@@ -12,7 +12,7 @@ class AddRelationshipFields implements Task
 {
     use InteractWithRelationships;
 
-    const INDENT = '            ';
+    protected const INDENT = '            ';
 
     public function handle(array $data, Closure $next): array
     {
@@ -56,17 +56,11 @@ class AddRelationshipFields implements Task
                 $fields .= ')';
 
 
+                $fields .= match ($fieldType) {
+                    'Select', 'MultiSelect' => '->options(/* TODO pass Array|Collection $' . $label . 'Options */)',
+                    'KeyVal', 'Repeater' => "->fields([/* TODO add {$label} fields */])",
+                };
 
-                switch ($fieldType) {
-                    case 'Select':
-                    case 'MultiSelect':
-                    $fields .= '->options(/* TODO pass Array|Collection $'.$label.'Options */)';
-                    break;
-                    case 'KeyVal':
-                    case 'Repeater':
-                    $fields .= "->fields([/* TODO add {$label} fields */])";
-                    break;
-                }
                 $fields .= "->relation(/* TODO create a save{$label}() event hook */)";
 
                 if ($this->isNullable($reference, $model)) {
@@ -85,7 +79,7 @@ class AddRelationshipFields implements Task
         return $next($data);
     }
 
-    private function buildMethodName(string $name, string $type)
+    private function buildMethodName(string $name, string $type): string
     {
         static $pluralRelations = [
             'belongstomany',
@@ -93,7 +87,7 @@ class AddRelationshipFields implements Task
             'morphmany',
         ];
 
-        return in_array(strtolower($type), $pluralRelations)
+        return in_array(strtolower($type), $pluralRelations, false)
             ? Str::plural($name)
             : $name;
     }
@@ -108,13 +102,13 @@ class AddRelationshipFields implements Task
     {
         $relationColumnName = $this->relationshipIdentifiers($model->columns())
             ->filter(function ($relationReference, $columnName) use ($relation, $model) {
-                return in_array($relationReference, Arr::get($model->relationships(), 'belongsTo', []))
+                return in_array($relationReference, Arr::get($model->relationships(), 'belongsTo', []), false)
                     && $columnName === $relation;
             })
             ->first();
 
         return ! is_null($relationColumnName)
-            && in_array('nullable', $model->columns()[$relationColumnName]->modifiers());
+            && in_array('nullable', $model->columns()[$relationColumnName]->modifiers(), false);
     }
 
     private function fieldType(string $dataType): string

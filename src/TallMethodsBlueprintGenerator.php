@@ -14,8 +14,7 @@ class TallMethodsBlueprintGenerator implements Generator
 {
     use HasStubPath, HasSharedGeneratorFunctions;
 
-    /** @var \Illuminate\Contracts\Filesystem\Filesystem */
-    protected $files;
+    protected ?\Illuminate\Contracts\Filesystem\Filesystem $files;
 
     public function __construct($files)
     {
@@ -51,35 +50,37 @@ class TallMethodsBlueprintGenerator implements Generator
     }
 
 
-    protected function populateStub(string $stub, \Blueprint\Models\Controller $controller)
+    protected function populateStub(string $stub, \Blueprint\Models\Controller $controller): array|string
     {
         $data = [];
 
         foreach ($controller->methods() as $name => $statements) {
             data_set($data, 'name', $controller->name());
             //switch action name
-            if ($name == 'store') {
+            if ($name === 'store') {
                 data_set($data, 'action', 'create');
                 $data = (new onCreate($statements, $data))->handle();
             }
-            if ($name == 'update') {
+            if ($name === 'update') {
                 data_set($data, 'action', 'update');
                 $data = (new onUpdate($statements, $data))->handle();
             }
-            if ($name == 'destroy') {
+            if ($name === 'destroy') {
                 data_set($data, 'action', 'delete');
                 $data = (new onDelete($statements, $data))->handle();
             }
         }
 
-        $stub = str_replace('// create...', data_get($data, 'create'), $stub);
-        $stub = str_replace('// update...', data_get($data, 'update'), $stub);
-        $stub = str_replace('// delete...', data_get($data, 'delete'), $stub);
-        $stub = $this->sharedStrReplace($stub, $controller->name(), $controller->fullyQualifiedClassName());
-        $imports = array_unique(data_get($data, 'imports', []));
-        $stub = str_replace('use Controllers;', implode(PHP_EOL, $imports), $stub);
+        $stub = str_replace(
+            ['// create...', '// update...', '// delete...'],
+            [data_get($data, 'create'), data_get($data, 'update'), data_get($data, 'delete')],
+            $stub);
 
-        return $stub;
+        $stub = (string)$this->sharedStrReplace($stub, $controller->name(), $controller->fullyQualifiedClassName());
+
+        $imports = array_unique(data_get($data, 'imports', []));
+
+        return str_replace('use Controllers;', implode(PHP_EOL, $imports), $stub);
     }
 
 

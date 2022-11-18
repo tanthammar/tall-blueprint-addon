@@ -19,7 +19,7 @@ class TallBlueprintAddonServiceProvider extends ServiceProvider implements Defer
     /**
      * Bootstrap the application services.
      */
-    public function boot()
+    public function boot(): void
     {
         if ($this->app->runningInConsole()) {
             $this->publishes([
@@ -31,7 +31,7 @@ class TallBlueprintAddonServiceProvider extends ServiceProvider implements Defer
     /**
      * Register the application services.
      */
-    public function register()
+    public function register(): void
     {
         $this->mergeConfigFrom(
             dirname(__DIR__) . '/config/tall_forms_blueprint.php',
@@ -65,10 +65,8 @@ class TallBlueprintAddonServiceProvider extends ServiceProvider implements Defer
 
     /**
      * Get the services provided by the provider.
-     *
-     * @return array
      */
-    public function provides()
+    public function provides(): array
     {
         return [
             'command.blueprint.build',

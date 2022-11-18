@@ -7,7 +7,7 @@ use Tanthammar\TallBlueprintAddon\Contracts\Task;
 
 class AddTimestampFields implements Task
 {
-    const INDENT = '            ';
+    protected const INDENT = '            ';
 
     public function handle($data, Closure $next): array
     {

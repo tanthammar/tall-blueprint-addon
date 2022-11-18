@@ -8,13 +8,12 @@ use Illuminate\Support\Str;
 
 trait HasSharedGeneratorFunctions
 {
-    protected function sharedStrReplace(string $stub, $name, $className)
+    protected function sharedStrReplace(string $stub, $name, $className): array|string
     {
-        $stub = str_replace('DummyNamespace', "App" . $this->getFormNamespace(), $stub);
-        $stub = str_replace('ModelsPath', $className, $stub);
-        $stub = str_replace('DummyModel', $name, $stub);
-        $stub = str_replace('dummymodel', Str::snake($name), $stub);
-        return $stub;
+        return str_replace(
+                ['DummyNamespace', 'ModelsPath', 'DummyModel', 'dummymodel'],
+                ["App" . $this->getFormNamespace(), $className, $name, Str::snake($name)],
+            $stub);
     }
 
     protected function getFormNamespace(): string
