@@ -9,6 +9,7 @@ use Blueprint\Models\Controller;
 use Blueprint\Models\Statements\RenderStatement;
 use Blueprint\Tree;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
 
 class ViewGenerator implements Generator
 {
@@ -40,7 +41,7 @@ class ViewGenerator implements Generator
                 //start tall-forms
                 if (in_array($method, self::tall_forms_actions, false)) {
                     $this->is_tall_form = true;
-                    $this->model = \Str::lower($controller->name());
+                    $this->model = Str::lower($controller->name());
                 } else {
                     $this->is_tall_form = false;
                     $this->model = '';
