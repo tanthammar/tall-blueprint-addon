@@ -5,13 +5,15 @@ namespace Tanthammar\TallBlueprintAddon\Generators;
 
 
 use Blueprint\Contracts\Generator;
+use Blueprint\Models\Controller;
 use Blueprint\Models\Statements\RenderStatement;
 use Blueprint\Tree;
+use Illuminate\Filesystem\Filesystem;
 
 class ViewGenerator implements Generator
 {
 
-    private ?\Illuminate\Contracts\Filesystem\Filesystem $files;
+    private ?Filesystem $files;
 
     private const tall_forms_actions = [
         'create', 'store', 'edit', 'update', 'destroy'
@@ -32,7 +34,7 @@ class ViewGenerator implements Generator
 
         $stub = $this->files->stub('view.stub');
 
-        /** @var \Blueprint\Models\Controller $controller */
+        /** @var Controller $controller */
         foreach ($tree->controllers() as $controller) {
             foreach ($controller->methods() as $method => $statements) {
                 //start tall-forms

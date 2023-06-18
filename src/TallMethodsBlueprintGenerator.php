@@ -3,8 +3,9 @@
 namespace Tanthammar\TallBlueprintAddon;
 
 use Blueprint\Contracts\Generator;
+use Blueprint\Models\Controller;
 use Blueprint\Tree;
-use Illuminate\Support\Str;
+use Illuminate\Filesystem\Filesystem;
 use Tanthammar\TallBlueprintAddon\Tasks\HasSharedGeneratorFunctions;
 use Tanthammar\TallBlueprintAddon\Tasks\OnCreate;
 use Tanthammar\TallBlueprintAddon\Tasks\OnDelete;
@@ -14,7 +15,7 @@ class TallMethodsBlueprintGenerator implements Generator
 {
     use HasStubPath, HasSharedGeneratorFunctions;
 
-    protected ?\Illuminate\Contracts\Filesystem\Filesystem $files;
+    protected ?Filesystem $files;
 
     public function __construct($files)
     {
@@ -27,7 +28,7 @@ class TallMethodsBlueprintGenerator implements Generator
 
         $stub = $this->getStub();
 
-        /** @var \Blueprint\Models\Controller $controller */
+        /** @var Controller $controller */
         foreach ($tree->controllers() as $controller) {
             if (!$controller->isApiResource()) {
                 $path = $this->outputPath($controller->name());
@@ -50,7 +51,7 @@ class TallMethodsBlueprintGenerator implements Generator
     }
 
 
-    protected function populateStub(string $stub, \Blueprint\Models\Controller $controller): array|string
+    protected function populateStub(string $stub, Controller $controller): array|string
     {
         $data = [];
 

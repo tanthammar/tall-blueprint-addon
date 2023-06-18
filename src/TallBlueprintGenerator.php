@@ -5,6 +5,7 @@ namespace Tanthammar\TallBlueprintAddon;
 use Blueprint\Contracts\Generator;
 use Blueprint\Models\Model;
 use Blueprint\Tree;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Pipeline\Pipeline;
 use Illuminate\Support\Str;
 use Tanthammar\TallBlueprintAddon\Contracts\Task;
@@ -16,7 +17,7 @@ class TallBlueprintGenerator implements Generator
 {
     use HasStubPath, HasSharedGeneratorFunctions;
 
-    protected ?\Illuminate\Contracts\Filesystem\Filesystem $files;
+    protected ?Filesystem $files;
 
     private array $imports = [];
 
@@ -33,7 +34,7 @@ class TallBlueprintGenerator implements Generator
 
         $stub = $this->getStub();
 
-        /** @var \Blueprint\Models\Model $model */
+        /** @var Model $model */
         foreach ($tree->models() as $model) {
 
             $path = $this->outputPath($model->name());
